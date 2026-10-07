@@ -18,8 +18,8 @@
 <div id="tvchart" class="tvchart"></div><div class="chartNote">自動偵測近期擺動高低點形成支撐/壓力區；▲ 多頭訊號、▼ 空頭訊號。可用上方按鈕隱藏圖層。</div></div><div class="stats" id="indicators" style="margin-top:10px"></div></section>
 <section class="card"><div class="sectionTitle"><h2>🎯 策略訊號</h2><span class="badge" id="signalTime">—</span></div><div id="strategy"></div></section>
 <section class="card"><div class="sectionTitle"><h2>🧠 策略共識</h2><span class="muted">規則化模型</span></div><div id="consensus"></div></section>
-<section class="card wide"><div class="sectionTitle"><h2>📅 今日交易計畫</h2><span class="badge">自動更新</span></div><div class="plan" id="dailyPlan"></div></section><section class="card wide"><div class="sectionTitle"><h2>🤖 自動交易決策引擎</h2><span class="badge" id="engineStatus">分析中…</span></div><div id="engine"></div></section><section class="card wide"><div class="sectionTitle"><h2>🚀 一鍵交易方案卡</h2><span class="badge" id="bestStatus">掃描 BTC / ETH…</span></div><div id="bestTrade"></div></section>
-<section class="card wide"><div class="sectionTitle"><h2>💰 自動交易計算系統</h2><span class="muted">勝率 → 槓桿 → 倉位 → 止損 → TP → 預估盈虧</span></div><div class="form"><div><div class="muted">本金 USDT</div><input class="input" id="capital" type="number" value="1000"></div><div><div class="muted">進場價</div><input class="input" id="entry" type="number"></div><div><div class="muted">止損價</div><input class="input" id="stop" type="number"></div><div><div class="muted">風險 %</div><input class="input" id="risk" type="number" value="1" step=".1"></div></div><div class="form" style="margin-top:8px"><div><div class="muted">建議槓桿（自動）</div><input class="input" id="levInput" type="number" min="10" max="50" step="1"></div><div><div class="muted">回測勝率（自動）</div><input class="input" id="winInput" type="number" readonly></div><div><div class="muted">目標 R:R</div><input class="input" id="rrInput" type="number" value="2" min="1" step=".5"></div><div><div class="muted">手續費估算 %</div><input class="input" id="feeInput" type="number" value=".1" min="0" step=".01"></div></div><div class="calc"><div class="calcBox">最大可承受虧損 <b id="loss">—</b></div><div class="calcBox">建議數量 <b id="qty">—</b></div><div class="calcBox">倉位名目價值 <b id="notional">—</b></div><div class="calcBox">保證金需求 <b id="margin">—</b></div><div class="calcBox">止損距離 <b id="dist">—</b></div><div class="calcBox">自動 TP <b id="tpAuto">—</b></div><div class="calcBox">預估止損虧損 <b id="slPnl">—</b></div><div class="calcBox">預估 TP 獲利 <b id="tpPnl">—</b></div><div class="calcBox">簡化強平價 <b id="liq">—</b></div><div class="calcBox">單筆期望值 <b id="ev">—</b></div></div><div class="muted" style="margin-top:10px">回測勝率使用目前策略規則在近期 K 線上模擬訊號後計算，不等於未來勝率。強平價為簡化估算，實際數值會因交易所、維持保證金、手續費與模式而不同。</div></section>
+<section class="card wide"><div class="sectionTitle"><h2>📅 今日交易計畫</h2><span class="badge">自動更新</span></div><div class="plan" id="dailyPlan"></div></section><section class="card wide"><div class="sectionTitle"><h2>🤖 70% 高勝率模式 · 自動交易決策引擎</h2><span class="badge" id="engineStatus">分析中…</span></div><div id="engine"></div></section><section class="card wide"><div class="sectionTitle"><h2>🚀 A+ 一鍵交易方案卡</h2><span class="badge" id="bestStatus">掃描 BTC / ETH…</span></div><div id="bestTrade"></div></section>
+<section class="card wide"><div class="sectionTitle"><h2>💰 自動交易計算系統</h2><span class="muted">勝率 → 槓桿 → 倉位 → 止損 → TP → 預估盈虧</span></div><div class="form"><div><div class="muted">本金 USDT</div><input class="input" id="capital" type="number" value="1000"></div><div><div class="muted">進場價</div><input class="input" id="entry" type="number"></div><div><div class="muted">止損價</div><input class="input" id="stop" type="number"></div><div><div class="muted">風險 %</div><input class="input" id="risk" type="number" value="1" step=".1"></div></div><div class="form" style="margin-top:8px"><div><div class="muted">建議槓桿（自動）</div><input class="input" id="levInput" type="number" min="10" max="50" step="1"></div><div><div class="muted">回測勝率（自動）</div><input class="input" id="winInput" type="number" readonly></div><div><div class="muted">目標 R:R</div><input class="input" id="rrInput" type="number" value="1.5" min="1" step=".5"></div><div><div class="muted">手續費估算 %</div><input class="input" id="feeInput" type="number" value=".1" min="0" step=".01"></div></div><div class="calc"><div class="calcBox">最大可承受虧損 <b id="loss">—</b></div><div class="calcBox">建議數量 <b id="qty">—</b></div><div class="calcBox">倉位名目價值 <b id="notional">—</b></div><div class="calcBox">保證金需求 <b id="margin">—</b></div><div class="calcBox">止損距離 <b id="dist">—</b></div><div class="calcBox">自動 TP <b id="tpAuto">—</b></div><div class="calcBox">預估止損虧損 <b id="slPnl">—</b></div><div class="calcBox">預估 TP 獲利 <b id="tpPnl">—</b></div><div class="calcBox">簡化強平價 <b id="liq">—</b></div><div class="calcBox">單筆期望值 <b id="ev">—</b></div></div><div class="muted" style="margin-top:10px">回測勝率使用目前策略規則在近期 K 線上模擬訊號後計算，不等於未來勝率。強平價為簡化估算，實際數值會因交易所、維持保證金、手續費與模式而不同。</div></section>
 <section class="card wide"><h2>⚠️ 使用規則</h2><div class="rows"><div class="row"><span>趨勢</span><b>4H → 1H 優先，短週期只找進場點</b></div><div class="row"><span>進場</span><b>突破確認 / 支撐反彈，避免追價</b></div><div class="row"><span>風險</span><b>單筆 ≤ 1%，最低目標 R:R ≥ 1:2</b></div><div class="row"><span>無訊號</span><b>WAIT，不強迫交易</b></div></div><div class="footer">資料來自 Binance 公開行情 API；圖表使用 Lightweight Charts。支撐/壓力與箭頭為規則模型自動偵測，不是保證反轉或獲利訊號。</div></section>
 </div></div>
 <script>
@@ -49,24 +49,21 @@ function atr(a,n=14){if(a.length<=n)return a.at(-1)?Math.abs(a.at(-1).h-a.at(-1)
 function multiTimeframeEngine(name,sets){
   const ds={};for(const k of Object.keys(sets))ds[k]=analyze(sets[k]);
   const weights={"4h":.4,"1h":.3,"15m":.2,"5m":.1};let bull=0,bear=0,total=0;
-  for(const k of Object.keys(weights)){const d=ds[k];if(!d)continue;const w=weights[k];total+=w;if(d.trend==="多")bull+=w;else if(d.trend==="空")bear+=w;}
+  for(const k of Object.keys(weights)){const d=ds[k];if(!d)continue;const w=weights[k];total+=w;if(d.trend==="多")bull+=w;else if(d.trend==="空")bear+=w}
   const direction=bull>bear+.15?"多":bear>bull+.15?"空":"震盪";
-  const d=ds["1h"]||ds["15m"], volatility=atr(sets["1h"]||sets["15m"])/d.last*100;
-  const bt=backtest(sets["1h"]||sets["15m"]), wr=bt.wr;
+  const d=ds["1h"]||ds["15m"],volatility=atr(sets["1h"]||sets["15m"])/d.last*100,bt=backtest(sets["1h"]||sets["15m"]),wr=bt.wr;
+  const agreement=Math.round(Math.max(bull,bear)/Math.max(total,.01)*100),grade=qualityGrade(wr,agreement,d.score,volatility);
   let lev=leverageByWinRate(wr,d.score);
-  if(volatility>=3)lev=Math.min(lev,15);else if(volatility>=2)lev=Math.min(lev,20);else if(volatility>=1.2)lev=Math.min(lev,30);
-  const agreement=Math.round(Math.max(bull,bear)/Math.max(total,.01)*100);
-  const allowed=(direction!=="震盪"&&agreement>=70&&d.score>=65&&((direction==="多"&&d.trend!=="空")||(direction==="空"&&d.trend!=="多")));
+  if(volatility>=3)lev=Math.min(lev,10);else if(volatility>=2)lev=Math.min(lev,15);else if(volatility>=1.2)lev=Math.min(lev,20);
+  if(grade==="A+")lev=Math.min(lev,20);else if(grade==="A")lev=Math.min(lev,15);else lev=10;
+  const allowed=grade==="A+"&&direction!=="震盪"&&agreement>=80&&((direction==="多"&&d.trend==="多")||(direction==="空"&&d.trend==="空"));
   const entry=direction==="多"?d.last:direction==="空"?d.last:d.support;
-  const atrRisk=Math.max(atr(sets["1h"]||sets["15m"])*1.4,Math.abs(d.resistance-d.support)*.12,d.last*.003);
-  const stop=direction==="多"?entry-atrRisk:direction==="空"?entry+atrRisk:d.support;
-  const riskDist=Math.abs(entry-stop);
-  const tp1=direction==="多"?entry+riskDist*1.5:entry-riskDist*1.5;
-  const tp2=direction==="多"?entry+riskDist*2:entry-riskDist*2;
-  const tp3=direction==="多"?entry+riskDist*3:entry-riskDist*3;
-  return{name,direction,ds,volatility,wr,bt,lev,agreement,allowed,entry,stop,tp1,tp2,tp3,riskDist};
+  const riskDist=Math.max(atr(sets["1h"]||sets["15m"])*1.25,Math.abs(d.resistance-d.support)*.10,d.last*.0025);
+  const stop=direction==="多"?entry-riskDist:direction==="空"?entry+riskDist:d.support;
+  const tp1=direction==="多"?entry+riskDist*1.2:entry-riskDist*1.2,tp2=direction==="多"?entry+riskDist*1.5:entry-riskDist*1.5,tp3=direction==="多"?entry+riskDist*2:entry-riskDist*2;
+  return{name,direction,ds,volatility,wr,bt,lev,agreement,grade,allowed,entry,stop,tp1,tp2,tp3,riskDist};
 }
-function renderEngine(results){
+function renderEnginefunction renderEngine(results){
   const rows=results.map(x=>{const d=x.ds["1h"]||x.ds["15m"];return "<div class='planBox'><h3>"+x.name+" · <span class='"+(x.allowed?(x.direction==="多"?"up":"dn"):"flat")+"'>"+(x.allowed?(x.direction==="多"?"允許做多":"允許做空"):"WAIT")+"</span></h3><div class='rows'><div class='row'><span>多週期方向</span><b>"+x.direction+"</b></div><div class='row'><span>週期一致度</span><b>"+x.agreement+"%</b></div><div class='row'><span>ATR 波動</span><b>"+x.volatility.toFixed(2)+"%</b></div><div class='row'><span>回測勝率</span><b>"+Math.round(x.wr)+"% · "+x.bt.tests+"筆</b></div><div class='row'><span>自動槓桿</span><b>"+x.lev+"x</b></div><div class='row'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='row'><span>止損</span><b>$"+fmt(x.stop)+"</b></div><div class='row'><span>TP1 / TP2 / TP3</span><b>$"+fmt(x.tp1)+" / $"+fmt(x.tp2)+" / $"+fmt(x.tp3)+"</b></div></div><div class='muted' style='margin-top:8px'>4H "+x.ds["4h"].trend+" · 1H "+x.ds["1h"].trend+" · 15m "+x.ds["15m"].trend+" · 5m "+x.ds["5m"].trend+"</div></div>"}).join("");
   $("engine").innerHTML="<div class='plan'>"+rows+"</div><div class='muted' style='margin-top:10px'>引擎規則：4H/1H 決定主要方向，15m/5m 負責進場確認；ATR 越高，自動壓低槓桿。WAIT 不代表看跌/看漲，而是目前條件不足。</div>";
   $("engineStatus").textContent=results.some(x=>x.allowed)?"有交易條件":"WAIT";
@@ -90,7 +87,7 @@ function renderBestTrade(results){
   const sl=Math.abs(x.entry-x.stop)*qty+fees;
   const ev=(x.wr/100)*p2-(1-x.wr/100)*sl;
   const rr=Math.abs(x.tp2-x.entry)/Math.max(riskPerUnit,.00000001);
-  const reason=isTrade?"多週期一致度、回測勝率與 ATR 風險條件通過":"目前 BTC / ETH 都沒有完全符合進場門檻，以下僅列出相對較強標的，不代表建議立即下單";
+  const reason=isTrade?"A+ 嚴格模式通過：勝率、週期一致度、趨勢與波動條件全部達標":"目前沒有 A+ 訊號；系統寧願 WAIT，也不為了提高交易頻率降低 70% 模式門檻";
   $("bestTrade").innerHTML="<div class='plan'><div class='planBox' style='border:1px solid #273342'><div class='muted'>最佳目標</div><div class='score'>"+x.name+" · "+side+"</div><p>"+reason+"</p><div class='levels'><div class='lvl'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(x.stop)+"</b></div><div class='lvl'><span>槓桿</span><b>"+x.lev+"x</b></div><div class='lvl'><span>回測勝率</span><b>"+Math.round(x.wr)+"%</b></div><div class='lvl'><span>一致度</span><b>"+x.agreement+"%</b></div></div><div class='rows' style='margin-top:10px'><div class='row'><span>TP1 · 1.5R</span><b>$"+fmt(x.tp1)+"</b></div><div class='row'><span>TP2 · 2R</span><b>$"+fmt(x.tp2)+"</b></div><div class='row'><span>TP3 · 3R</span><b>$"+fmt(x.tp3)+"</b></div><div class='row'><span>ATR 波動</span><b>"+x.volatility.toFixed(2)+"%</b></div></div></div><div class='planBox'><h3>💰 本金 $"+fmt(cap)+" · 自動倉位</h3><div class='row'><span>最大風險</span><b>$"+fmt(riskMoney)+"</b></div><div class='row'><span>建議數量</span><b>"+(qty?qty.toFixed(6):"—")+"</b></div><div class='row'><span>名目倉位</span><b>$"+fmt(notional)+"</b></div><div class='row'><span>所需保證金</span><b>$"+fmt(margin)+"</b></div><div class='row'><span>止損預估虧損</span><b>-$"+fmt(sl)+"</b></div><div class='row'><span>TP1 / TP2 / TP3</span><b>+$"+fmt(p1)+" / +$"+fmt(p2)+" / +$"+fmt(p3)+"</b></div><div class='row'><span>TP2 R:R</span><b>1:"+rr.toFixed(2)+"</b></div><div class='row'><span>單筆期望值</span><b>"+(ev>=0?"+$":"-$")+fmt(Math.abs(ev))+"</b></div></div></div><div class='muted' style='margin-top:10px'>⚠️ 這張卡是規則模型的自動化結果，不是保證獲利；槓桿越高，清算與滑價風險越大。WAIT 時應等待條件改善。</div>";
   $("bestStatus").textContent=isTrade?"最佳標的："+x.name+" · "+side:"目前無合格交易";
 }
@@ -112,34 +109,38 @@ function leverageByWinRate(wr,score){
   const strength=score>=70||score<=30?1:0.7;
   return Math.max(10,Math.min(50,Math.round(base*strength)));
 }
-function backtest(a){
-  let wins=0,losses=0,signals=0,tests=0,rr=2, look=12;
-  for(let i=60;i<a.length-look;i++){
-    const d=analyze(a.slice(0,i+1));
-    if(d.score>=70||d.score<=30){
-      signals++;
-      const long=d.score>=70, entry=a[i].c;
-      const risk=Math.max(entry*0.003, Math.abs(d.resistance-d.support)*0.06);
-      const stop=long?entry-risk:entry+risk, target=long?entry+risk*rr:entry-risk*rr;
-      let outcome=null;
-      for(let j=i+1;j<=i+look;j++){
-        if(long){
-          if(a[j].l<=stop){outcome="L";break}
-          if(a[j].h>=target){outcome="W";break}
-        }else{
-          if(a[j].h>=stop){outcome="L";break}
-          if(a[j].l<=target){outcome="W";break}
-        }
-      }
-      if(outcome==="W")wins++;
-      if(outcome==="L")losses++;
-      if(outcome)tests++;
-    }
-  }
-  const wr=tests?(wins/tests*100):50;
-  return {wr,wins,losses,signals,tests};
+function strictSignal(a,i){
+  if(i<60)return null;
+  const h=a.slice(0,i+1),d=analyze(h),avgVol=h.slice(-20).reduce((s,x)=>s+x.v,0)/20,v=h.at(-1).v;
+  const trend=d.trend,m=d.m.h,r=d.r,emaUp=d.last>d.e20.at(-1)&&d.e20.at(-1)>d.e50.at(-1),emaDn=d.last<d.e20.at(-1)&&d.e20.at(-1)<d.e50.at(-1);
+  const volOk=v>=avgVol*1.05,atrPct=atr(h)/d.last*100,volRange=atrPct>=0.25&&atrPct<=2.5;
+  let side=null,quality=0;
+  if(trend==="多"&&emaUp&&m>0&&r>=50&&r<=68){side="LONG";quality=35}
+  if(trend==="空"&&emaDn&&m<0&&r>=32&&r<=50){side="SHORT";quality=35}
+  if(!side||!volRange)return null;
+  if(volOk)quality+=15;
+  if(Math.abs(d.m.h)>d.last*0.00015)quality+=10;
+  if(d.score>=70||d.score<=30)quality+=15;
+  return{side,quality,d,atrPct};
 }
-function renderStrategy(a){
+function backtest(a){
+  let wins=0,losses=0,signals=0,tests=0,rr=1.5,look=16;
+  for(let i=60;i<a.length-look;i++){
+    const sig=strictSignal(a,i);if(!sig||sig.quality<65)continue;signals++;
+    const entry=a[i].c,risk=Math.max(atr(a.slice(0,i+1))*1.25,entry*0.0025),long=sig.side==="LONG";
+    const stop=long?entry-risk:entry+risk,target=long?entry+risk*rr:entry-risk*rr;let outcome=null;
+    for(let j=i+1;j<=i+look;j++){if(long){if(a[j].l<=stop){outcome="L";break}if(a[j].h>=target){outcome="W";break}}else{if(a[j].h>=stop){outcome="L";break}if(a[j].l<=target){outcome="W";break}}}
+    if(outcome==="W")wins++;if(outcome==="L")losses++;if(outcome)tests++;
+  }
+  return{wr:tests?wins/tests*100:50,wins,losses,signals,tests,rr};
+}
+function qualityGrade(wr,agreement,score,volatility){
+  if(wr>=70&&agreement>=80&&Math.abs(score-50)>=20&&volatility<2.5)return"A+";
+  if(wr>=65&&agreement>=75)return"A";
+  if(wr>=60)return"B";
+  return"C";
+}
+function renderStrategyfunction renderStrategy(a){
   let d=a.d,bias=d.trend==="多"?"偏多":d.trend==="空"?"偏空":"中性";
   const confidence=Math.round(d.score);
   const bt=backtest(window.chartData||[]);
