@@ -384,8 +384,10 @@ async function loadAll(){
     const val=(r,fb)=>r.status==="fulfilled"?r.value:fb;
     const eth=val(e,b),eb5=val(b5,b),ee5=val(e5,eb5),eb15=val(b15,b),ee15=val(e15,eb15),eb1=val(b1,b),ee1=val(e1,eb1),eb4=val(b4,b),ee4=val(e4,eb4);
     const re=renderAsset("eth","ETH",eth);current.ETH=re.d;renderConsensus();renderPlan();
-    renderEngine([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
-    renderBestTrade([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    const baseEngines=[
+      multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),
+      multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})
+    ];
     try{
       const nowAlt=Date.now();
       if(!window.altRadarCache||nowAlt-(window.altRadarLastScan||0)>=300000){
@@ -395,14 +397,18 @@ async function loadAll(){
       const alts=window.altRadarCache||[];
       renderAltRadar(alts);renderSniperBoard(alts);
       const altEngines=alts.slice(0,6).filter(x=>x.dir!=="觀察"&&x.bt.tests>=5).map(altToStrategy);
-      const strategyRows=[
-        multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),
-        multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4}),
-        ...altEngines
-      ];
-      renderEngine(strategyRows);
-      renderBestTrade(strategyRows);
-    }catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
+      baseEngines.push(...altEngines);
+    }catch(e){
+      $("altStatus").textContent="掃描失敗";
+      $("sniperStatus").textContent="等待下次掃描";
+    }
+    // 不論山寨幣掃描成功與否，一鍵交易卡都直接吃「目前全部 A/A+ 策略」。
+    renderEngine(baseEngines);
+    try{renderBestTrade(baseEngines)}catch(e){
+      console.error("bestTrade render error",e);
+      $("bestStatus").textContent="A以上方案計算中";
+      $("bestTrade").innerHTML="<div class='planBox'><div class='score'>A / A+</div><p>偵測到高品質方案，但交易計畫計算失敗，正在等待下一輪資料。</p></div>";
+    }
     $("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);$("risk").value=15;$("rrInput").value=2.2;calc();
   }catch(err){
     console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");
