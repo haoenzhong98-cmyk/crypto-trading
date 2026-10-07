@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="112" fill="#070b12"/>
+<rect x="64" y="64" width="384" height="384" rx="88" fill="#0e151e" stroke="#f0b90b" stroke-width="10"/>
+<path d="M118 344h52l42-88 52 52 72-132 58 74" fill="none" stroke="#35d07f" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M118 392h276" stroke="#273342" stroke-width="16" stroke-linecap="round"/>
+<circle cx="336" cy="176" r="18" fill="#f0b90b"/>
+<text x="256" y="150" text-anchor="middle" fill="#edf2f7" font-family="Arial,sans-serif" font-size="42" font-weight="700">CRYPTO</text>
+</svg>
