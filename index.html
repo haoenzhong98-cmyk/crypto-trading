@@ -247,7 +247,8 @@ function renderBestTrade(results){
   const isQuality=x.grade==="A+"||x.grade==="A";
   const entryPct=isQuality?recommendedEntryPct(x):0;
   const entryMargin=isQuality?cap*entryPct/100:0;
-  const riskPct=recommendedRiskPct(x);\n  const riskMoney=entryMargin*(riskPct/100);
+  const riskPct=recommendedRiskPct(x);
+  const riskMoney=entryMargin*(riskPct/100);
   // 一鍵方案嚴格沿用逐倉規則：進場資產 15% 就是最大止損，不是總本金 15%。
   const stopPct=x.entry?riskPerUnit/x.entry:0;
   const maxLevByRisk=(stopPct+fee*2)>0?riskMoney/(entryMargin*(stopPct+fee*2)):50;
