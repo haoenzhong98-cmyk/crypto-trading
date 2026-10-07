@@ -222,9 +222,19 @@ function renderBestTrade(results){
 
 function renderAsset(id,s,a){let d=analyze(a),chg=(d.last-a.at(-2).c)/a.at(-2).c*100,sig=d.score>=70?"BUY":d.score<=30?"SELL":"WAIT",cls=sig==="BUY"?"up":sig==="SELL"?"dn":"flat",entry=d.trend==="多"?d.last:d.support,stop=d.trend==="空"?d.resistance:d.support-(d.resistance-d.support)*.06,tp1=entry+(entry-stop)*2,tp2=entry+(entry-stop)*3,tp3=entry+(entry-stop)*4;$(id).innerHTML="<div class='assetHead'><div><div class='sym'>"+s+"/USDT · "+interval.toUpperCase()+"</div><div class='price'>$"+fmt(d.last)+"</div><div class='"+(chg>=0?"up":"dn")+"'>"+(chg>=0?"+":"")+chg.toFixed(2)+"%</div></div><div style='text-align:right'><div class='signal "+cls+"'>"+sig+"</div><div class='muted'>信號分數 "+Math.round(d.score)+"/100</div></div></div><div class='rows' style='margin-top:10px'><div class='row'><span>EMA20</span><b>$"+fmt(d.e20.at(-1))+"</b></div><div class='row'><span>EMA50</span><b>$"+fmt(d.e50.at(-1))+"</b></div><div class='row'><span>RSI14</span><b>"+d.r.toFixed(1)+"</b></div><div class='row'><span>MACD柱</span><b>"+d.m.h.toFixed(3)+"</b></div><div class='row'><span>自動支撐</span><b>$"+fmt(d.support)+"</b></div><div class='row'><span>自動壓力</span><b>$"+fmt(d.resistance)+"</b></div></div><div class='levels'><div class='lvl'><span>進場參考</span><b>$"+fmt(entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(stop)+"</b></div><div class='lvl'><span>TP1</span><b>$"+fmt(tp1)+"</b></div><div class='lvl'><span>TP2</span><b>$"+fmt(tp2)+"</b></div><div class='lvl'><span>TP3</span><b>$"+fmt(tp3)+"</b></div></div>";return{d,sig,entry,stop,tp1,tp2,tp3}}
 async function ensureChartLib(){
-  if(window.LightweightCharts)return true;
+  if(window.LightweightCharts&&typeof window.LightweightCharts.createChart==="function")return true;
   const urls=["https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.min.js","https://unpkg.com/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js"];
-  for(const src of urls)try{await new Promise((resolve,reject)=>{const s=document.createElement("script");s.src=src;s.async=true;s.onload=()=>resolve();s.onerror=reject;document.head.appendChild(s)});if(window.LightweightCharts)return true}catch(e){}
+  for(const src of urls){
+    try{
+      await new Promise((resolve,reject)=>{
+        const s=document.createElement("script");
+        s.src=src;s.async=true;
+        s.onload=resolve;s.onerror=reject;
+        document.head.appendChild(s);
+      });
+      if(window.LightweightCharts&&typeof window.LightweightCharts.createChart==="function")return true;
+    }catch(e){}
+  }
   return false;
 }
 function initTV(){if(tv)return;if(!window.LightweightCharts)throw Error("K線圖表元件載入失敗");let el=$("tvchart");if(!el)throw Error("找不到 K 線容器");tv=LightweightCharts.createChart(el,{width:el.clientWidth||800,height:el.clientHeight||500,layout:{background:{type:"solid",color:"#080d14"},textColor:"#b6c0cc",fontFamily:"-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif",fontSize:11},grid:{vertLines:{color:"#121b25"},horzLines:{color:"#121b25"}},rightPriceScale:{borderColor:"#25313d",scaleMargins:{top:.08,bottom:.22},textColor:"#aeb8c5",entireTextOnly:false},timeScale:{borderColor:"#25313d",timeVisible:true,secondsVisible:false,rightOffset:5,barSpacing:7,fixLeftEdge:false,fixRightEdge:false},localization:{locale:"zh-TW",priceFormatter:p=>Number(p).toLocaleString("en-US",{maximumFractionDigits:p>=100?2:4})},crosshair:{mode:LightweightCharts.CrosshairMode.Normal,vertLine:{labelVisible:true},horzLine:{labelVisible:true}},handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true},handleScale:{axisPressedMouseMove:true,mouseWheel:true,pinch:true}});candle=tv.addCandlestickSeries({upColor:"#26a69a",downColor:"#ef5350",borderVisible:false,wickUpColor:"#26a69a",wickDownColor:"#ef5350",priceFormat:{type:"price",precision:2,minMove:.01}});ema20Line=tv.addLineSeries({color:"#f0b90b",lineWidth:2,priceLineVisible:false,lastValueVisible:false});ema50Line=tv.addLineSeries({color:"#7c8cff",lineWidth:2,priceLineVisible:false,lastValueVisible:false});volumeSeries=tv.addHistogramSeries({priceFormat:{type:"volume"},priceScaleId:"volume",scaleMargins:{top:.82,bottom:0}});new ResizeObserver(()=>{if(tv&&el.isConnected)tv.resize(el.clientWidth||800,el.clientHeight||500)}).observe(el)}
