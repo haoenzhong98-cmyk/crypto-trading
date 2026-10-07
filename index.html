@@ -241,6 +241,78 @@ function drawTV(a,tr){
   if(showSignals)candle.setMarkers(markers);else candle.setMarkers([]);
   tv.timeScale().fitContent();
 }
+
+function toggleEMA(n){
+  if(n===20){showEMA20=!showEMA20;$("ema20Btn").classList.toggle("active",showEMA20);ema20Line?.applyOptions({visible:showEMA20})}
+  else{showEMA50=!showEMA50;$("ema50Btn").classList.toggle("active",showEMA50);ema50Line?.applyOptions({visible:showEMA50})}
+}
+function toggleVolume(){showVolume=!showVolume;$("volBtn").classList.toggle("active",showVolume);volumeSeries?.applyOptions({visible:showVolume})}
+function toggleSR(){showSR=!showSR;$("srBtn").classList.toggle("active",showSR);if(tv&&candle&&current.BTC){try{srLines.forEach(x=>candle.removePriceLine(x))}catch(e){};srLines=[];if(showSR){const d=analyze(window.chartData||[]);srLines.push(priceLine(candle,d.support,"S","#3b82f6"),priceLine(candle,d.resistance,"R","#a855f7"))}}
+}
+function toggleSignals(){showSignals=!showSignals;$("sigBtn").classList.toggle("active",showSignals);if(candle){candle.setMarkers(showSignals?signalMarkers:[])}}
+function renderIndicators(a){
+  const d=analyze(a);
+  $("indicators").innerHTML="<div class='stat'><span class='muted'>RSI 14</span><b>"+d.r.toFixed(1)+" · "+(d.r>70?"超買":d.r<30?"超賣":"中性")+"</b></div><div class='stat'><span class='muted'>MACD</span><b>"+d.m.m.toFixed(3)+" / "+d.m.s.toFixed(3)+"</b></div><div class='stat'><span class='muted'>自動支撐</span><b>$"+fmt(d.support)+"</b></div><div class='stat'><span class='muted'>自動壓力</span><b>$"+fmt(d.resistance)+"</b></div>"
+}
+function leverageByScore(score){const s=Math.max(50,Math.min(100,score));return Math.round(10+((s-50)/50)*40)}
+function leverageByWinRate(wr,score){const w=Math.max(50,Math.min(95,wr));const base=Math.round(10+((w-50)/45)*40);const strength=score>=70||score<=30?1:.7;return Math.max(10,Math.min(50,Math.round(base*strength)))}
+function strictSignal(a,i){
+  if(i<60)return null;
+  const h=a.slice(0,i+1),d=analyze(h),avgVol=h.slice(-20).reduce((s,x)=>s+x.v,0)/20,v=h.at(-1).v;
+  const trend=d.trend,m=d.m.h,r=d.r,emaUp=d.last>d.e20.at(-1)&&d.e20.at(-1)>d.e50.at(-1),emaDn=d.last<d.e20.at(-1)&&d.e20.at(-1)<d.e50.at(-1);
+  const volOk=v>=avgVol*1.05,atrPct=atr(h)/d.last*100,volRange=atrPct>=.25&&atrPct<=2.5;
+  let side=null,quality=0;
+  if(trend==="多"&&emaUp&&m>0&&r>=50&&r<=68){side="LONG";quality=35}
+  if(trend==="空"&&emaDn&&m<0&&r>=32&&r<=50){side="SHORT";quality=35}
+  if(!side||!volRange)return null;
+  if(volOk)quality+=15;
+  if(Math.abs(d.m.h)>d.last*.00015)quality+=10;
+  if(d.score>=70||d.score<=30)quality+=15;
+  return{side,quality,d,atrPct}
+}
+function backtest(a){
+  let wins=0,losses=0,signals=0,tests=0,rr=1.5,look=16;
+  if(!a||a.length<80)return{wr:50,wins:0,losses:0,signals:0,tests:0,rr};
+  for(let i=60;i<a.length-look;i++){
+    const sig=strictSignal(a,i);if(!sig||sig.quality<65)continue;signals++;
+    const entry=a[i].c,risk=Math.max(atr(a.slice(0,i+1))*1.25,entry*.0025),long=sig.side==="LONG";
+    const stop=long?entry-risk:entry+risk,target=long?entry+risk*rr:entry-risk*rr;let outcome=null;
+    for(let j=i+1;j<=i+look;j++){
+      if(long){if(a[j].l<=stop){outcome="L";break}if(a[j].h>=target){outcome="W";break}}
+      else{if(a[j].h>=stop){outcome="L";break}if(a[j].l<=target){outcome="W";break}}
+    }
+    if(outcome==="W")wins++;if(outcome==="L")losses++;if(outcome)tests++;
+  }
+  return{wr:tests?wins/tests*100:50,wins,losses,signals,tests,rr}
+}
+function qualityGrade(wr,agreement,score,volatility){
+  if(wr>=70&&agreement>=80&&Math.abs(score-50)>=20&&volatility<2.5)return"A+";
+  if(wr>=65&&agreement>=75)return"A";
+  if(wr>=60)return"B";
+  return"C"
+}
+function renderStrategy(a){
+  const d=a.d,bias=d.trend==="多"?"偏多":d.trend==="空"?"偏空":"中性",confidence=Math.round(d.score);
+  const bt=backtest(window.chartData||[]),winRate=Math.round(bt.wr),lev=leverageByWinRate(winRate,confidence);
+  $("strategy").innerHTML="<div class='score'>"+a.sig+"</div><p class='muted'>"+bias+" · 技術綜合分數 "+confidence+"/100</p><div class='bar'><i style='width:"+Math.max(5,Math.min(100,d.score))+"%'></i></div><div class='levels' style='margin-top:12px'><div class='lvl'><span>近期回測勝率*</span><b>"+winRate+"%</b></div><div class='lvl'><span>建議槓桿</span><b>"+lev+"x</b></div><div class='lvl'><span>回測樣本</span><b>"+bt.tests+" 筆</b></div></div><div class='row'><span>主要條件</span><b>"+(d.trend==="多"?"EMA20 > EMA50":d.trend==="空"?"EMA20 < EMA50":"EMA糾結")+"</b></div><div class='row'><span>RSI</span><b>"+d.r.toFixed(1)+"</b></div><div class='row'><span>MACD</span><b>"+(d.m.h>0?"多方":"空方")+"</b></div><div class='row'><span>支撐 / 壓力</span><b>$"+fmt(d.support)+" / $"+fmt(d.resistance)+"</b></div><div class='row'><span>槓桿執行</span><b>"+(a.sig==="WAIT"?"WAIT：不建議開槓桿":lev+"x · "+(a.sig==="BUY"?"等待回踩/確認再多":"等待反彈/確認再空"))+"</b></div><div class='muted' style='margin-top:9px'>* 勝率為近期歷史 K 線的規則回測結果，不代表未來勝率；槓桿只改變資金效率與風險放大，不會提高策略本身勝率。</div>"
+}
+function renderConsensus(){
+  const a=current.BTC,b=current.ETH;if(!a||!b)return;
+  const avg=(a.score+b.score)/2,lab=avg>=70?"偏多":avg<=30?"偏空":"觀望";
+  $("consensus").innerHTML="<div class='score'>"+Math.round(avg)+"<span style='font-size:16px'> / 100</span></div><p><span class='badge'>"+lab+"</span> BTC "+Math.round(a.score)+" · ETH "+Math.round(b.score)+"</p><div class='row'><span>趨勢共識</span><b>"+(a.trend===b.trend?a.trend+"頭一致":"分歧")+"</b></div><div class='row'><span>策略強度</span><b>"+(avg>=70||avg<=30?"可執行":"降低倉位 / 等待")+"</b></div><div class='muted' style='margin-top:9px'>支撐/壓力由近期擺動高低點聚類偵測；箭頭為模型分數跨越 BUY/SELL 門檻時產生。</div>"
+}
+function renderPlan(){
+  const a=current.BTC,b=current.ETH;if(!a||!b)return;
+  const pick=a.score>=b.score?"BTC":"ETH",d=pick==="BTC"?a:b,strong=d.score>=70||d.score<=30;
+  $("dailyPlan").innerHTML="<div class='planBox'><h3>今日主策略：<span class='"+(d.score>=70?"up":d.score<=30?"dn":"flat")+"'>"+pick+" · "+(d.trend==="多"?"順勢偏多":d.trend==="空"?"順勢偏空":"區間等待")+"</span></h3><div class='check'>① 支撐：$"+fmt(d.support)+" · 壓力：$"+fmt(d.resistance)+"</div><div class='check'>② 等回踩支撐 / 壓力突破後回踩確認</div><div class='check'>③ 進場後止損固定，單筆最多風險 1%</div><div class='check'>④ TP1 至少 2R，達標後可分批落袋</div></div><div class='planBox'><h3>執行結論</h3><div class='check'>BTC：<b>"+Math.round(a.score)+"/100</b></div><div class='check'>ETH：<b>"+Math.round(b.score)+"/100</b></div><div class='check'>目前：<b>"+(strong?"有條件可交易":"WAIT，等待更好位置")+"</b></div><div class='check'>更新：<b>"+new Date().toLocaleTimeString("zh-TW")+"</b></div></div>"
+}
+function calc(){
+  const cap=+$("capital").value||0,e=+$("entry").value||0,s=+$("stop").value||0,r=+$("risk").value||0,rr=+$("rrInput").value||2,fee=(+$("feeInput").value||0)/100;
+  const wr=+$("winInput").value||50,lev=Math.max(10,Math.min(50,+$("levInput").value||10)),loss=cap*r/100,dist=Math.abs(e-s);
+  let q=dist?loss/dist:0;const maxQty=lev&&e?cap*lev/e:0;if(maxQty&&q>maxQty)q=maxQty;
+  const notional=q*e,margin=lev?notional/lev:0,feeCost=notional*fee*2,long=s<e,tp=long?e+(e-s)*rr:e-(s-e)*rr,slPnl=dist*q+feeCost,tpPnl=Math.abs(tp-e)*q-feeCost,liq=long?e*(1-1/lev+.005):e*(1+1/lev-.005),ev=(wr/100)*tpPnl-(1-wr/100)*slPnl;
+  $("loss").textContent="$"+fmt(loss);$("qty").textContent=q?q.toFixed(6):"—";$("notional").textContent=q?"$"+fmt(notional):"—";$("margin").textContent=q?"$"+fmt(margin):"—";$("dist").textContent=e&&s?(dist/e*100).toFixed(2)+"%":"—";$("tpAuto").textContent=e&&s?"$"+fmt(tp):"—";$("slPnl").textContent=q?"-$"+fmt(slPnl):"—";$("tpPnl").textContent=q?"+$"+fmt(tpPnl):"—";$("liq").textContent=e&&lev?"$"+fmt(liq):"—";$("ev").textContent=q?(ev>=0?"+$":"-$")+fmt(Math.abs(ev)):"—"
+}
 async function loadAll(){
   try{
     $("updated").textContent="K線載入中…";$("tvchart").innerHTML="";tv=null;candle=null;ema20Line=null;ema50Line=null;volumeSeries=null;srLines=[];
