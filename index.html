@@ -81,7 +81,9 @@ function recommendedEntryPct(x){
   return pct;
 }
 function renderEngine(results){
-  const rows=results.map(x=>{const d=x.ds["1h"]||x.ds["15m"];return "<div class='planBox'><h3>"+x.name+" · <span class='"+(x.allowed?(x.direction==="多"?"up":"dn"):"flat")+"'>"+(x.allowed?(x.direction==="多"?"允許做多":"允許做空"):"WAIT")+"</span></h3><div class='rows'><div class='row'><span>多週期方向</span><b>"+x.direction+"</b></div><div class='row'><span>週期一致度</span><b>"+x.agreement+"%</b></div><div class='row'><span>ATR 波動</span><b>"+x.volatility.toFixed(2)+"%</b></div><div class='row'><span>回測勝率</span><b>"+Math.round(x.wr)+"% · "+x.bt.tests+"筆</b></div><div class='row'><span>自動槓桿</span><b>"+x.lev+"x</b></div><div class='row'><span>進攻風險</span><b>"+x.riskPct.toFixed(2)+"%</b></div><div class='row'><span>Trailing</span><b>"+fmt(x.trail.trail)+" / BE " +fmt(x.trail.breakeven)+"</b></div><div class='row'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='row'><span>止損</span><b>$"+fmt(x.stop)+"</b></div><div class='row'><span>TP1 / TP2 / TP3</span><b>$"+fmt(x.tp1)+" / $"+fmt(x.tp2)+" / $"+fmt(x.tp3)+"</b></div></div><div class='muted' style='margin-top:8px'>4H "+x.ds["4h"].trend+" · 1H "+x.ds["1h"].trend+" · 15m "+x.ds["15m"].trend+" · 5m "+x.ds["5m"].trend+"</div></div>"}).join("");
+  const visible=results.filter(x=>x.grade==="A+"||x.grade==="A");
+  if(!visible.length){$("engine").innerHTML="<div class='plan'><div class='planBox'><div class='score'>WAIT</div><p>目前沒有 A 以上策略。</p><div class='muted'>系統只顯示 A / A+ 品質等級，B、C 與一般 WAIT 訊號會隱藏。</div></div></div>";$("engineStatus").textContent="無 A 以上策略";return}
+  const rows=visible.map(x=>{const d=x.ds["1h"]||x.ds["15m"];return "<div class='planBox'><h3>"+x.name+" · <span class='"+(x.allowed?(x.direction==="多"?"up":"dn"):"flat")+"'>"+(x.allowed?(x.direction==="多"?"允許做多":"允許做空"):"WAIT")+"</span></h3><div class='rows'><div class='row'><span>多週期方向</span><b>"+x.direction+"</b></div><div class='row'><span>週期一致度</span><b>"+x.agreement+"%</b></div><div class='row'><span>ATR 波動</span><b>"+x.volatility.toFixed(2)+"%</b></div><div class='row'><span>回測勝率</span><b>"+Math.round(x.wr)+"% · "+x.bt.tests+"筆</b></div><div class='row'><span>自動槓桿</span><b>"+x.lev+"x</b></div><div class='row'><span>進攻風險</span><b>"+x.riskPct.toFixed(2)+"%</b></div><div class='row'><span>Trailing</span><b>"+fmt(x.trail.trail)+" / BE " +fmt(x.trail.breakeven)+"</b></div><div class='row'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='row'><span>止損</span><b>$"+fmt(x.stop)+"</b></div><div class='row'><span>TP1 / TP2 / TP3</span><b>$"+fmt(x.tp1)+" / $"+fmt(x.tp2)+" / $"+fmt(x.tp3)+"</b></div></div><div class='muted' style='margin-top:8px'>4H "+x.ds["4h"].trend+" · 1H "+x.ds["1h"].trend+" · 15m "+x.ds["15m"].trend+" · 5m "+x.ds["5m"].trend+"</div></div>"}).join("");
   $("engine").innerHTML="<div class='plan'>"+rows+"</div><div class='muted' style='margin-top:10px'>引擎規則：4H/1H 決定主要方向，15m/5m 負責進場確認；ATR 越高，自動壓低槓桿。WAIT 不代表看跌/看漲，而是目前條件不足。</div>";
   $("engineStatus").textContent=results.some(x=>x.allowed)?"有交易條件":"WAIT";
 }
@@ -187,6 +189,7 @@ function altToStrategy(x){
   return {name:x.symbol,direction:x.dir,ds:x.ds,volatility:x.volatility,wr:x.bt.wr,bt:x.bt,lev:x.lev,agreement:Math.round(x.agreement),grade:x.grade,allowed,riskPct,entry:x.entry,stop:x.stop,tp1:x.tp1,tp2:x.tp2,tp3:x.tp3,riskDist,trail:{trail:trailDist,breakeven:x.dir==="多"?x.entry+riskDist:x.entry-riskDist}};
 }
 function renderAltRadar(rows){
+  rows=rows.filter(x=>x.grade==="A+"||x.grade==="A");
   if(!rows.length){$("altRadar").innerHTML="<div class='muted'>目前沒有符合流動性與品質門檻的山寨幣。</div>";$("altStatus").textContent="無合格標的";return}
   const html=rows.slice(0,6).map(x=>{
     const strong=x.score>=70&&x.bt.wr>=70&&x.agreement>=75&&x.dir!=="觀察";
@@ -196,7 +199,7 @@ function renderAltRadar(rows){
   $("altStatus").textContent="市場候選 100 · 深度分析 "+rows.length;
 }
 function renderSniperBoard(rows){
-  const top=rows.filter(x=>x.dir!=="觀察"&&x.bt.tests>=5).slice(0,3);
+  const top=rows.filter(x=>(x.grade==="A+"||x.grade==="A")&&x.dir!=="觀察"&&x.bt.tests>=5).slice(0,3);
   if(!top.length){
     $("sniperBoard").innerHTML="<div class='planBox'><div class='score'>WAIT</div><p>目前沒有足夠高品質的 TOP 3。系統不會為了湊滿 3 個標的而降低門檻。</p><div class='muted'>需要：方向明確、多週期一致、具備有效回測樣本，並通過波動率與流動性篩選。</div></div>";
     $("sniperStatus").textContent="無合格 TOP 3";
@@ -212,8 +215,10 @@ function renderSniperBoard(rows){
   $("sniperStatus").textContent="TOP "+top.length+" · 每 30 分鐘重排";
 }
 function renderBestTrade(results){
-  const eligible=results.filter(x=>x.allowed);
-  const ranked=(eligible.length?eligible:results).slice().sort((a,b)=>{
+  const visible=results.filter(x=>x.grade==="A+"||x.grade==="A");
+  if(!visible.length){$("bestTrade").innerHTML="<div class='planBox'><div class='score'>WAIT</div><p>目前沒有 A 以上策略。</p><div class='muted'>系統只顯示 A / A+ 品質等級，其他等級不列入最佳交易。</div></div>";$("bestStatus").textContent="無 A 以上策略";return}
+  const eligible=visible.filter(x=>x.allowed);
+  const ranked=(eligible.length?eligible:visible).slice().sort((a,b)=>{
     const sa=(a.allowed?30:0)+a.agreement*.35+a.wr*.2+(a.direction==="震盪"?0:20)-(a.volatility*5);
     const sb=(b.allowed?30:0)+b.agreement*.35+b.wr*.2+(b.direction==="震盪"?0:20)-(b.volatility*5);
     return sb-sa;
@@ -232,9 +237,9 @@ function renderBestTrade(results){
   const rr=Math.abs(x.tp2-x.entry)/Math.max(riskPerUnit,.00000001);
   const entryPct=isTrade?recommendedEntryPct(x):0;
   const entryMargin=isTrade?cap*entryPct/100:0;
-  const reason=isTrade?"A+ 嚴格模式通過：勝率、週期一致度、趨勢與波動條件全部達標":"目前沒有 A+ 訊號；系統寧願 WAIT，也不為了提高交易頻率降低 70% 模式門檻";
+  const reason=isTrade?"A+ 嚴格模式通過：勝率、週期一致度、趨勢與波動條件全部達標":x.grade==="A"?"A 級策略：符合高品質門檻，但尚未達 A+ 自動執行條件":"目前沒有 A 以上訊號";
   $("bestTrade").innerHTML="<div class='plan'><div class='planBox' style='border:1px solid #273342'><div class='muted'>最佳目標</div><div class='score'>"+x.name+" · "+side+"</div><p>"+reason+"</p><div class='levels'><div class='lvl'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(x.stop)+"</b></div><div class='lvl'><span>槓桿</span><b>"+x.lev+"x</b></div><div class='lvl'><span>回測勝率</span><b>"+Math.round(x.wr)+"%</b></div><div class='lvl'><span>一致度</span><b>"+x.agreement+"%</b></div></div><div class='rows' style='margin-top:10px'><div class='row'><span>TP1 · 1.5R</span><b>$"+fmt(x.tp1)+"</b></div><div class='row'><span>TP2 · 2R</span><b>$"+fmt(x.tp2)+"</b></div><div class='row'><span>TP3 · 3R</span><b>$"+fmt(x.tp3)+"</b></div><div class='row'><span>ATR 波動</span><b>"+x.volatility.toFixed(2)+"%</b></div></div></div><div class='planBox'><h3>💰 本金 $"+fmt(cap)+" · 自動倉位</h3><div class='row'><span>建議進場資產</span><b>"+entryPct+"% · $"+fmt(entryMargin)+"</b></div><div class='row'><span>最大風險</span><b>$"+fmt(entryMargin*.15)+"</b></div><div class='row'><span>建議數量</span><b>"+(qty?qty.toFixed(6):"—")+"</b></div><div class='row'><span>名目倉位</span><b>$"+fmt(notional)+"</b></div><div class='row'><span>所需保證金</span><b>$"+fmt(margin)+"</b></div><div class='row'><span>止損預估虧損</span><b>-$"+fmt(sl)+"</b></div><div class='row'><span>TP1 / TP2 / TP3</span><b>+$"+fmt(p1)+" / +$"+fmt(p2)+" / +$"+fmt(p3)+"</b></div><div class='row'><span>TP2 R:R</span><b>1:"+rr.toFixed(2)+"</b></div><div class='row'><span>單筆期望值</span><b>"+(ev>=0?"+$":"-$")+fmt(Math.abs(ev))+"</b></div></div></div><div class='muted' style='margin-top:10px'>⚠️ 這張卡是規則模型的自動化結果，不是保證獲利；槓桿越高，清算與滑價風險越大。WAIT 時應等待條件改善。</div>";
-  $("bestStatus").textContent=isTrade?"最佳標的："+x.name+" · "+side:"目前無合格交易";
+  $("bestStatus").textContent=isTrade?"最佳標的："+x.name+" · "+side:x.grade+" 候選："+x.name+" · "+side;
 }
 
 function renderAsset(id,s,a){let d=analyze(a),chg=(d.last-a.at(-2).c)/a.at(-2).c*100,sig=d.score>=70?"BUY":d.score<=30?"SELL":"WAIT",cls=sig==="BUY"?"up":sig==="SELL"?"dn":"flat",entry=d.trend==="多"?d.last:d.support,stop=d.trend==="空"?d.resistance:d.support-(d.resistance-d.support)*.06,tp1=entry+(entry-stop)*2,tp2=entry+(entry-stop)*3,tp3=entry+(entry-stop)*4;$(id).innerHTML="<div class='assetHead'><div><div class='sym'>"+s+"/USDT · "+interval.toUpperCase()+"</div><div class='price'>$"+fmt(d.last)+"</div><div class='"+(chg>=0?"up":"dn")+"'>"+(chg>=0?"+":"")+chg.toFixed(2)+"%</div></div><div style='text-align:right'><div class='signal "+cls+"'>"+sig+"</div><div class='muted'>信號分數 "+Math.round(d.score)+"/100</div></div></div><div class='rows' style='margin-top:10px'><div class='row'><span>EMA20</span><b>$"+fmt(d.e20.at(-1))+"</b></div><div class='row'><span>EMA50</span><b>$"+fmt(d.e50.at(-1))+"</b></div><div class='row'><span>RSI14</span><b>"+d.r.toFixed(1)+"</b></div><div class='row'><span>MACD柱</span><b>"+d.m.h.toFixed(3)+"</b></div><div class='row'><span>自動支撐</span><b>$"+fmt(d.support)+"</b></div><div class='row'><span>自動壓力</span><b>$"+fmt(d.resistance)+"</b></div></div><div class='levels'><div class='lvl'><span>進場參考</span><b>$"+fmt(entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(stop)+"</b></div><div class='lvl'><span>TP1</span><b>$"+fmt(tp1)+"</b></div><div class='lvl'><span>TP2</span><b>$"+fmt(tp2)+"</b></div><div class='lvl'><span>TP3</span><b>$"+fmt(tp3)+"</b></div></div>";return{d,sig,entry,stop,tp1,tp2,tp3}}
