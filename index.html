@@ -207,9 +207,9 @@ function renderAltRadar(rows){
   if(!rows.length){$("altRadar").innerHTML="<div class='muted'>目前沒有符合流動性與品質門檻的山寨幣。</div>";$("altStatus").textContent="無合格標的";return}
   const html=rows.slice(0,6).map(x=>{
     const strong=x.score>=70&&x.bt.wr>=70&&x.agreement>=75&&x.dir!=="觀察";
-    return "<div class='planBox' style='margin-bottom:10px'><div class='assetHead'><div><div class='sym'>"+x.symbol+" / USDT · 山寨幣候選</div><div class='price'>$"+fmt(x.price)+"</div><div class='"+(x.chg>=0?"up":"dn")+"'>"+(x.chg>=0?"+":"")+x.chg.toFixed(2)+"% · 24H 成交額 $"+fmt(x.vol)+"</div></div><div style='text-align:right'><div class='signal "+(strong?(x.dir==="多"?"up":"dn"):"flat")+"'>"+(strong?x.dir==="多"?"LONG":"SHORT":"WAIT")+"</div><div class='badge'>"+x.grade+" · 品質 "+x.score+"</div></div></div><div class='levels'><div class='lvl'><span>4H / 1H</span><b>"+x.ds["4h"].trend+" / "+x.ds["1h"].trend+"</b></div><div class='lvl'><span>15m / 5m</span><b>"+x.ds["15m"].trend+" / "+x.ds["5m"].trend+"</b></div><div class='lvl'><span>回測勝率</span><b>"+Math.round(x.bt.wr)+"%</b></div><div class='lvl'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(x.stop)+"</b></div></div><div class='rows' style='margin-top:8px'><div class='row'><span>TP1 / TP2 / TP3</span><b>$"+fmt(x.tp1)+" / $"+fmt(x.tp2)+" / $"+fmt(x.tp3)+"</b></div><div class='row'><span>策略狀態</span><b>"+(strong?"A+ 候選":"WAIT · 等待條件確認")+"</b></div><div class='row'><span>理由</span><b>"+x.reason+"</b></div></div></div>"
+    return "<div class='planBox' style='margin-bottom:10px'><div class='assetHead'><div><div class='sym'>"+x.symbol+" / USDT · 山寨幣候選</div><div class='price' id='altLivePrice"+x.symbol+"'>$"+fmt(x.price)+"</div><div class='"+(x.chg>=0?"up":"dn")+"'>"+(x.chg>=0?"+":"")+x.chg.toFixed(2)+"% · 24H 成交額 $"+fmt(x.vol)+"</div></div><div style='text-align:right'><div class='signal "+(strong?(x.dir==="多"?"up":"dn"):"flat")+"'>"+(strong?x.dir==="多"?"LONG":"SHORT":"WAIT")+"</div><div class='badge'>"+x.grade+" · 品質 "+x.score+"</div></div></div><div class='levels'><div class='lvl'><span>4H / 1H</span><b>"+x.ds["4h"].trend+" / "+x.ds["1h"].trend+"</b></div><div class='lvl'><span>15m / 5m</span><b>"+x.ds["15m"].trend+" / "+x.ds["5m"].trend+"</b></div><div class='lvl'><span>回測勝率</span><b>"+Math.round(x.bt.wr)+"%</b></div><div class='lvl'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(x.stop)+"</b></div></div><div class='rows' style='margin-top:8px'><div class='row'><span>TP1 / TP2 / TP3</span><b>$"+fmt(x.tp1)+" / $"+fmt(x.tp2)+" / $"+fmt(x.tp3)+"</b></div><div class='row'><span>策略狀態</span><b>"+(strong?"A+ 候選":"WAIT · 等待條件確認")+"</b></div><div class='row'><span>理由</span><b>"+x.reason+"</b></div></div></div>"
   }).join("");
-  $("altRadar").innerHTML=html+"<div class='muted'>本輪先從 Binance USDT 市場挑選最多 100 個高流動性候選，再對其中 30 個做 5m/15m/1H/4H 深度分析；狙擊榜最後只保留 TOP 3。這是規則模型，不是保證獲利。</div>";
+  $("altRadar").innerHTML=html+"<div class='muted'>本輪先從 Binance USDT 市場挑選最多 100 個高流動性候選，再對其中 30 個做 5m/15m/1H/4H 深度分析；狙擊榜最後只保留 TOP 3。這是規則模型，不是保證獲利。</div>";startAltLivePrices(rows);
   $("altStatus").textContent="市場候選 100 · 深度分析 "+rows.length;
 }
 function renderSniperBoard(rows){
@@ -223,9 +223,9 @@ function renderSniperBoard(rows){
     const side=x.dir==="多"?"LONG":"SHORT";
     const risk=Math.abs(x.entry-x.stop),rr1=Math.abs(x.tp1-x.entry)/Math.max(risk,.00000001),rr2=Math.abs(x.tp2-x.entry)/Math.max(risk,.00000001),rr3=Math.abs(x.tp3-x.entry)/Math.max(risk,.00000001);
     const gradeStrong=x.grade==="A+"&&x.bt.wr>=70&&x.agreement>=75;
-    return "<div class='planBox' style='margin-bottom:12px;border:1px solid "+(gradeStrong?"#35d07f":"#273342")+"'><div class='assetHead'><div><div class='muted'>#"+(i+1)+" 狙擊標的</div><div class='score' style='font-size:28px'>"+x.symbol+" · "+side+"</div><div class='muted'>24H 成交額 $"+fmt(x.vol)+" · 24H "+(x.chg>=0?"+":"")+x.chg.toFixed(2)+"% · 狙擊分數 "+x.sniper+"/100</div></div><div style='text-align:right'><div class='badge'>"+x.grade+"</div><div class='muted'>一致度 "+Math.round(x.agreement)+"%</div></div></div><div class='levels' style='margin-top:12px'><div class='lvl'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(x.stop)+"</b></div><div class='lvl'><span>建議槓桿</span><b>"+(x.lev?x.lev.toFixed(1):"—")+"x</b></div><div class='lvl'><span>歷史勝率</span><b>"+Math.round(x.bt.wr)+"%</b></div><div class='lvl'><span>回測樣本</span><b>"+x.bt.tests+" 筆</b></div></div><div class='rows' style='margin-top:10px'><div class='row'><span>TP1 · "+rr1.toFixed(1)+"R</span><b>$"+fmt(x.tp1)+"</b></div><div class='row'><span>TP2 · "+rr2.toFixed(1)+"R</span><b>$"+fmt(x.tp2)+"</b></div><div class='row'><span>TP3 · "+rr3.toFixed(1)+"R</span><b>$"+fmt(x.tp3)+"</b></div><div class='row'><span>為什麼選它</span><b>"+x.reason+"</b></div><div class='row'><span>波動 / 方向</span><b>"+x.volatility.toFixed(2)+"% · 4H "+x.ds["4h"].trend+" / 1H "+x.ds["1h"].trend+"</b></div></div><div class='muted' style='margin-top:9px'>"+(gradeStrong?"A+：通過嚴格狙擊條件。":"候選：排名靠前，但仍建議等待價格確認。")+" 歷史勝率是規則回測結果，不代表未來機率。</div></div>"
+    return "<div class='planBox' style='margin-bottom:12px;border:1px solid "+(gradeStrong?"#35d07f":"#273342")+"'><div class='assetHead'><div><div class='muted'>#"+(i+1)+" 狙擊標的</div><div class='score' style='font-size:28px'>"+x.symbol+" · "+side+"</div><div class='price' id='sniperLivePrice"+x.symbol+"'>$"+fmt(x.price)+"</div><div class='muted'>24H 成交額 $"+fmt(x.vol)+" · 24H "+(x.chg>=0?"+":"")+x.chg.toFixed(2)+"% · 狙擊分數 "+x.sniper+"/100</div></div><div style='text-align:right'><div class='badge'>"+x.grade+"</div><div class='muted'>一致度 "+Math.round(x.agreement)+"%</div></div></div><div class='levels' style='margin-top:12px'><div class='lvl'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(x.stop)+"</b></div><div class='lvl'><span>建議槓桿</span><b>"+(x.lev?x.lev.toFixed(1):"—")+"x</b></div><div class='lvl'><span>歷史勝率</span><b>"+Math.round(x.bt.wr)+"%</b></div><div class='lvl'><span>回測樣本</span><b>"+x.bt.tests+" 筆</b></div></div><div class='rows' style='margin-top:10px'><div class='row'><span>TP1 · "+rr1.toFixed(1)+"R</span><b>$"+fmt(x.tp1)+"</b></div><div class='row'><span>TP2 · "+rr2.toFixed(1)+"R</span><b>$"+fmt(x.tp2)+"</b></div><div class='row'><span>TP3 · "+rr3.toFixed(1)+"R</span><b>$"+fmt(x.tp3)+"</b></div><div class='row'><span>為什麼選它</span><b>"+x.reason+"</b></div><div class='row'><span>波動 / 方向</span><b>"+x.volatility.toFixed(2)+"% · 4H "+x.ds["4h"].trend+" / 1H "+x.ds["1h"].trend+"</b></div></div><div class='muted' style='margin-top:9px'>"+(gradeStrong?"A+：通過嚴格狙擊條件。":"候選：排名靠前，但仍建議等待價格確認。")+" 歷史勝率是規則回測結果，不代表未來機率。</div></div>"
   }).join("");
-  $("sniperBoard").innerHTML=html+"<div class='muted'>狙擊榜排序：技術品質 + 歷史回測 + 多週期一致度 + 動能 + 流動性 − 高波動懲罰。每次掃描會重新排名，不固定持有名單。</div>";
+  $("sniperBoard").innerHTML=html+"<div class='muted'>狙擊榜排序：技術品質 + 歷史回測 + 多週期一致度 + 動能 + 流動性 − 高波動懲罰。每次掃描會重新排名，不固定持有名單。</div>";startAltLivePrices(top);
   $("sniperStatus").textContent="TOP "+top.length+" · 每 30 分鐘重排";
 }
 function renderBestTrade(results){
@@ -288,6 +288,25 @@ function startLivePrices(){
   ws.onopen=()=>{const live=$("liveStatus");if(live)live.textContent="● 即時價格已連線"};
   ws.onerror=()=>{const live=$("liveStatus");if(live)live.textContent="○ 即時價格重連中…"};
   ws.onclose=()=>{const live=$("liveStatus");if(live)live.textContent="○ 即時價格重連中…";setTimeout(startLivePrices,3000)};
+}
+function startAltLivePrices(rows){
+  const symbols=[...new Set((rows||[]).map(x=>String(x.symbol||"").toLowerCase()).filter(Boolean))].slice(0,50);
+  if(!symbols.length)return;
+  try{if(window.altLiveWS)window.altLiveWS.close()}catch(e){}
+  const streams=symbols.map(s=>s+"usdt@miniTicker").join("/");
+  const ws=new WebSocket("wss://stream.binance.com:9443/stream?streams="+streams);
+  window.altLiveWS=ws;
+  ws.onmessage=e=>{
+    try{
+      const m=JSON.parse(e.data).data,sym=(m.s||"").toUpperCase().replace("USDT",""),price=Number(m.c);
+      if(!sym||!price)return;
+      const a=$("altLivePrice"+sym),b=$("sniperLivePrice"+sym);
+      [a,b].forEach(el=>{if(el){el.textContent="$"+fmt(price);el.classList.remove("liveFlash");void el.offsetWidth;el.classList.add("liveFlash")}});
+    }catch(e){}
+  };
+  ws.onopen=()=>{const live=$("liveStatus");if(live)live.textContent="● BTC / ETH / 山寨幣即時行情已連線"};
+  ws.onerror=()=>{const live=$("liveStatus");if(live)live.textContent="○ 山寨幣即時行情重連中…"};
+  ws.onclose=()=>{const live=$("liveStatus");if(live)live.textContent="○ 山寨幣即時行情重連中…"};
 }
 async function ensureChartLib(){
   if(window.LightweightCharts&&typeof window.LightweightCharts.createChart==="function")return true;
