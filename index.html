@@ -18,7 +18,7 @@
 <div id="tvchart" class="tvchart"></div><div class="chartNote">自動偵測近期擺動高低點形成支撐/壓力區；▲ 多頭訊號、▼ 空頭訊號。可用上方按鈕隱藏圖層。</div></div><div class="stats" id="indicators" style="margin-top:10px"></div></section>
 <section class="card"><div class="sectionTitle"><h2>🎯 策略訊號</h2><span class="badge" id="signalTime">—</span></div><div id="strategy"></div></section>
 <section class="card"><div class="sectionTitle"><h2>🧠 策略共識</h2><span class="muted">規則化模型</span></div><div id="consensus"></div></section>
-<section class="card wide"><div class="sectionTitle"><h2>📅 今日交易計畫</h2><span class="badge">自動更新</span></div><div class="plan" id="dailyPlan"></div></section><section class="card wide"><div class="sectionTitle"><h2>🤖 70% 高勝率模式 · 自動交易決策引擎</h2><span class="badge" id="engineStatus">分析中…</span></div><div id="engine"></div></section><section class="card wide"><div class="sectionTitle"><h2>🚀 A+ 一鍵交易方案卡</h2><span class="badge" id="bestStatus">掃描 BTC / ETH…</span></div><div id="bestTrade"></div></section>
+<section class="card wide"><div class="sectionTitle"><h2>📅 今日交易計畫</h2><span class="badge">自動更新</span></div><div class="plan" id="dailyPlan"></div></section><section class="card wide"><div class="sectionTitle"><h2>🤖 70% 高勝率模式 · 自動交易決策引擎</h2><span class="badge" id="engineStatus">分析中…</span></div><div id="engine"></div></section><section class="card wide"><div class="sectionTitle"><h2>🧪 高品質山寨幣雷達</h2><span class="badge" id="altStatus">掃描中…</span></div><div id="altRadar"></div></section><section class="card wide"><div class="sectionTitle"><h2>🚀 A+ 一鍵交易方案卡</h2><span class="badge" id="bestStatus">掃描 BTC / ETH…</span></div><div id="bestTrade"></div></section>
 <section class="card wide"><div class="sectionTitle"><h2>💰 自動交易計算系統</h2><span class="muted">勝率 → 槓桿 → 倉位 → 止損 → TP → 預估盈虧</span></div><div class="form"><div><div class="muted">本金 USDT</div><input class="input" id="capital" type="number" value="1000"></div><div><div class="muted">進場價</div><input class="input" id="entry" type="number"></div><div><div class="muted">止損價</div><input class="input" id="stop" type="number"></div><div><div class="muted">風險 %</div><input class="input" id="risk" type="number" value="1" step=".1"></div></div><div class="form" style="margin-top:8px"><div><div class="muted">建議槓桿（自動）</div><input class="input" id="levInput" type="number" min="10" max="50" step="1"></div><div><div class="muted">回測勝率（自動）</div><input class="input" id="winInput" type="number" readonly></div><div><div class="muted">目標 R:R</div><input class="input" id="rrInput" type="number" value="1.5" min="1" step=".5"></div><div><div class="muted">手續費估算 %</div><input class="input" id="feeInput" type="number" value=".1" min="0" step=".01"></div></div><div class="calc"><div class="calcBox">最大可承受虧損 <b id="loss">—</b></div><div class="calcBox">建議數量 <b id="qty">—</b></div><div class="calcBox">倉位名目價值 <b id="notional">—</b></div><div class="calcBox">保證金需求 <b id="margin">—</b></div><div class="calcBox">止損距離 <b id="dist">—</b></div><div class="calcBox">自動 TP <b id="tpAuto">—</b></div><div class="calcBox">預估止損虧損 <b id="slPnl">—</b></div><div class="calcBox">預估 TP 獲利 <b id="tpPnl">—</b></div><div class="calcBox">簡化強平價 <b id="liq">—</b></div><div class="calcBox">單筆期望值 <b id="ev">—</b></div></div><div class="muted" style="margin-top:10px">回測勝率使用目前策略規則在近期 K 線上模擬訊號後計算，不等於未來勝率。強平價為簡化估算，實際數值會因交易所、維持保證金、手續費與模式而不同。</div></section>
 <section class="card wide"><h2>⚠️ 使用規則</h2><div class="rows"><div class="row"><span>趨勢</span><b>4H → 1H 優先，短週期只找進場點</b></div><div class="row"><span>進場</span><b>突破確認 / 支撐反彈，避免追價</b></div><div class="row"><span>風險</span><b>單筆 ≤ 1%，最低目標 R:R ≥ 1:2</b></div><div class="row"><span>無訊號</span><b>WAIT，不強迫交易</b></div></div><div class="footer">資料來自 Binance 公開行情 API；圖表使用 Lightweight Charts。支撐/壓力與箭頭為規則模型自動偵測，不是保證反轉或獲利訊號。</div></section>
 </div></div>
@@ -67,6 +67,62 @@ function renderEnginefunction renderEngine(results){
   const rows=results.map(x=>{const d=x.ds["1h"]||x.ds["15m"];return "<div class='planBox'><h3>"+x.name+" · <span class='"+(x.allowed?(x.direction==="多"?"up":"dn"):"flat")+"'>"+(x.allowed?(x.direction==="多"?"允許做多":"允許做空"):"WAIT")+"</span></h3><div class='rows'><div class='row'><span>多週期方向</span><b>"+x.direction+"</b></div><div class='row'><span>週期一致度</span><b>"+x.agreement+"%</b></div><div class='row'><span>ATR 波動</span><b>"+x.volatility.toFixed(2)+"%</b></div><div class='row'><span>回測勝率</span><b>"+Math.round(x.wr)+"% · "+x.bt.tests+"筆</b></div><div class='row'><span>自動槓桿</span><b>"+x.lev+"x</b></div><div class='row'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='row'><span>止損</span><b>$"+fmt(x.stop)+"</b></div><div class='row'><span>TP1 / TP2 / TP3</span><b>$"+fmt(x.tp1)+" / $"+fmt(x.tp2)+" / $"+fmt(x.tp3)+"</b></div></div><div class='muted' style='margin-top:8px'>4H "+x.ds["4h"].trend+" · 1H "+x.ds["1h"].trend+" · 15m "+x.ds["15m"].trend+" · 5m "+x.ds["5m"].trend+"</div></div>"}).join("");
   $("engine").innerHTML="<div class='plan'>"+rows+"</div><div class='muted' style='margin-top:10px'>引擎規則：4H/1H 決定主要方向，15m/5m 負責進場確認；ATR 越高，自動壓低槓桿。WAIT 不代表看跌/看漲，而是目前條件不足。</div>";
   $("engineStatus").textContent=results.some(x=>x.allowed)?"有交易條件":"WAIT";
+}
+function altQualityScore(ds,bt){
+  const d=ds["1h"]||ds["15m"],dir4=ds["4h"]?.trend,dir1=ds["1h"]?.trend,dir15=ds["15m"]?.trend,dir5=ds["5m"]?.trend;
+  const bull=[dir4,dir1,dir15,dir5].filter(x=>x==="多").length,bear=[dir4,dir1,dir15,dir5].filter(x=>x==="空").length;
+  const align=Math.max(bull,bear)/4*100;
+  const momentum=Math.min(100,Math.max(0,(Math.abs(d.score-50))*2));
+  const volume=d._volumeRatio||1;
+  let score=0;
+  score+=Math.min(30,align*.3);
+  score+=Math.min(25,bt.wr*.25);
+  score+=Math.min(20,momentum*.2);
+  score+=Math.min(15,Math.max(0,(volume-1)*15));
+  score+=d.last>d.support&&d.last<d.resistance?10:5;
+  return Math.round(Math.min(100,score));
+}
+async function get24hTickers(){
+  const urls=["https://api.binance.com/api/v3/ticker/24hr","https://api1.binance.com/api/v3/ticker/24hr","https://api2.binance.com/api/v3/ticker/24hr"];
+  let err;
+  for(const u of urls)try{const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),8000),r=await fetch(u,{cache:"no-store",signal:ctl.signal});clearTimeout(tm);if(!r.ok)throw Error("HTTP "+r.status);return await r.json()}catch(e){err=e}
+  throw err||Error("24h ticker 無法連線");
+}
+async function scanAltcoins(){
+  const tickers=await get24hTickers();
+  const blocked=/^(USDT|USDC|FDUSD|TUSD|USDP|DAI|BUSD|EUR|TRY|BRL|GBP|JPY|AUD|USTC)$/;
+  const candidates=tickers.filter(x=>x.symbol.endsWith("USDT")&&!blocked.test(x.symbol.replace("USDT",""))&&!/UPUSDT|DOWNUSDT|BULLUSDT|BEARUSDT/.test(x.symbol))
+    .map(x=>({...x,vol:+x.quoteVolume,chg:+x.priceChangePercent,price:+x.lastPrice}))
+    .filter(x=>x.vol>15000000&&x.price>0)
+    .sort((a,b)=>(Math.abs(b.chg)*0.35+Math.log10(b.vol)*3)-(Math.abs(a.chg)*0.35+Math.log10(a.vol)*3))
+    .slice(0,10);
+  const rows=[];
+  for(const x of candidates){
+    try{
+      const [a5,a15,a1,a4]=await Promise.all([get(x.symbol.replace("USDT",""),"5m"),get(x.symbol.replace("USDT",""),"15m"),get(x.symbol.replace("USDT",""),"1h"),get(x.symbol.replace("USDT",""),"4h")]);
+      const ds={"5m":analyze(a5),"15m":analyze(a15),"1h":analyze(a1),"4h":analyze(a4)};
+      const vol20=a1.slice(-20).reduce((s,z)=>s+z.v,0)/20;ds["1h"]._volumeRatio=vol20?a1.at(-1).v/vol20:1;
+      const bt=backtest(a1),grade=qualityGrade(bt.wr,Math.max(
+        [ds["4h"].trend,ds["1h"].trend,ds["15m"].trend,ds["5m"].trend].filter(z=>z===ds["4h"].trend).length/4*100,
+        [ds["4h"].trend,ds["1h"].trend,ds["15m"].trend,ds["5m"].trend].filter(z=>z===ds["1h"].trend).length/4*100
+      ),ds["1h"].score,atr(a1)/ds["1h"].last*100);
+      const score=altQualityScore(ds,bt),dir=ds["4h"].trend==="多"&&ds["1h"].trend==="多"?"多":ds["4h"].trend==="空"&&ds["1h"].trend==="空"?"空":"觀察";
+      const entry=ds["1h"].last,risk=Math.max(atr(a1)*1.25,entry*.003),stop=dir==="多"?entry-risk:dir==="空"?entry+risk:ds["1h"].support;
+      const tp1=dir==="多"?entry+risk*1.2:dir==="空"?entry-risk*1.2:entry,tp2=dir==="多"?entry+risk*1.5:dir==="空"?entry-risk*1.5:entry,tp3=dir==="多"?entry+risk*2:dir==="空"?entry-risk*2:entry;
+      rows.push({symbol:x.symbol.replace("USDT",""),price:x.price,chg:x.chg,vol:x.vol,ds,bt,grade,score,dir,entry,stop,tp1,tp2,tp3});
+    }catch(e){}
+  }
+  return rows.sort((a,b)=>b.score-a.score).slice(0,6);
+}
+function renderAltRadar(rows){
+  if(!rows.length){$("altRadar").innerHTML="<div class='muted'>目前沒有符合流動性與品質門檻的山寨幣。</div>";$("altStatus").textContent="無合格標的";return}
+  const html=rows.map(x=>{
+    const d=x.ds["1h"],agree=[x.ds["4h"].trend,x.ds["1h"].trend,x.ds["15m"].trend,x.ds["5m"].trend].filter(z=>z===x.ds["4h"].trend).length*25;
+    const strong=x.score>=70&&x.bt.wr>=70&&agree>=75&&x.dir!=="觀察";
+    return "<div class='planBox' style='margin-bottom:10px'><div class='assetHead'><div><div class='sym'>"+x.symbol+" / USDT · 山寨幣候選</div><div class='price'>$"+fmt(x.price)+"</div><div class='"+(x.chg>=0?"up":"dn")+"'>"+(x.chg>=0?"+":"")+x.chg.toFixed(2)+"% · 24H 成交額 $"+fmt(x.vol)+"</div></div><div style='text-align:right'><div class='signal "+(strong?(x.dir==="多"?"up":"dn"):"flat")+"'>"+(strong?x.dir==="多"?"LONG":"SHORT":"WAIT")+"</div><div class='badge'>"+x.grade+" · 品質 "+x.score+"</div></div></div><div class='levels'><div class='lvl'><span>4H / 1H</span><b>"+x.ds["4h"].trend+" / "+x.ds["1h"].trend+"</b></div><div class='lvl'><span>15m / 5m</span><b>"+x.ds["15m"].trend+" / "+x.ds["5m"].trend+"</b></div><div class='lvl'><span>回測勝率</span><b>"+Math.round(x.bt.wr)+"%</b></div><div class='lvl'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(x.stop)+"</b></div></div><div class='rows' style='margin-top:8px'><div class='row'><span>TP1 / TP2 / TP3</span><b>$"+fmt(x.tp1)+" / $"+fmt(x.tp2)+" / $"+fmt(x.tp3)+"</b></div><div class='row'><span>策略狀態</span><b>"+(strong?"A+ 候選 · 可進一步執行":"WAIT · 等待條件確認")+"</b></div><div class='row'><span>理由</span><b>流動性 + 多週期 + 動能 + 歷史回測</b></div></div></div>"
+  }).join("");
+  $("altRadar").innerHTML=html+"<div class='muted'>雷達每次掃描會重新從 Binance USDT 市場挑選流動性與動能較佳的標的，不固定名單；只有通過多週期與回測條件才會升級為 A+ 候選。這不是保證獲利的推薦清單。</div>";
+  $("altStatus").textContent="已掃描 · "+rows.length+" 個候選";
 }
 function renderBestTrade(results){
   const eligible=results.filter(x=>x.allowed);
@@ -177,6 +233,6 @@ async function loadAll(){try{$("updated").textContent="更新中…";$("tvchart"
 let rb=renderAsset("btc","BTC",b),re=renderAsset("eth","ETH",e);current.BTC=rb.d;current.ETH=re.d;window.chartData=b;drawTV(b,rb);renderIndicators(b);const bt=backtest(b);const autoLev=leverageByWinRate(Math.round(bt.wr),Math.round(rb.d.score));$("winInput").value=Math.round(bt.wr);$("levInput").value=autoLev;renderStrategy(rb);renderConsensus();renderPlan();
 const engB=multiTimeframeEngine("BTC",{ "5m":b5,"15m":b15,"1h":b1,"4h":b4 });
 const engE=multiTimeframeEngine("ETH",{ "5m":e5,"15m":e15,"1h":e1,"4h":e4 });
-renderEngine([engB,engE]);renderBestTrade([engB,engE]);$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");$("chartLabel").textContent="BTCUSDT · "+interval.toUpperCase();$("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);calc()}catch(err){console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");$("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗，正在使用備援行情連線。<br>"+(err?.message||"請重新整理頁面")+"</div>"}finally{$("updated").textContent="最後更新 "+new Date().toLocaleTimeString("zh-TW")}}
-document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);
+renderEngine([engB,engE]);renderBestTrade([engB,engE]);try{const alts=await scanAltcoins();renderAltRadar(alts)}catch(e){$("altStatus").textContent="掃描失敗";$("altRadar").innerHTML="<div class=\"muted\">山寨幣雷達暫時無法取得市場資料，主引擎不受影響。</div>"}$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");$("chartLabel").textContent="BTCUSDT · "+interval.toUpperCase();$("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);calc()}catch(err){console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");$("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗，正在使用備援行情連線。<br>"+(err?.message||"請重新整理頁面")+"</div>"}finally{$("updated").textContent="最後更新 "+new Date().toLocaleTimeString("zh-TW")}}
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);setInterval(()=>{scanAltcoins().then(renderAltRadar).catch(()=>{});},900000);
 </script></body></html>
