@@ -324,7 +324,9 @@ let accountState=JSON.parse(localStorage.getItem("cryptoAccountState")||'{"equit
 }
 function calc(){
   const e=+$('entry').value||0,s=+$('stop').value||0,rr=+$('rrInput').value||2,fee=(+$('feeInput').value||0)/100,wr=+$('winInput').value||50,autoLev=Math.max(1,Math.min(50,+$('levInput').value||10)),z=isolatedSizing(e,s,autoLev),fees=z.notional*fee*2,long=s<e,tp=long?e+(e-s)*rr:e-(s-e)*rr,slPnl=z.riskBudget+fees,tpPnl=Math.abs(tp-e)*z.qty-fees,liq=long?e*(1-1/z.lev+.005):e*(1+1/z.lev-.005),ev=(wr/100)*tpPnl-(1-wr/100)*slPnl;
-  $('capital').value=accountState.equity.toFixed(2);$('risk').value='15';$('loss').textContent=z.riskBudget?'
+  $('capital').value=accountState.equity.toFixed(2);$('risk').value='15';
+  $('loss').textContent=z.riskBudget?'$'+fmt(slPnl):'—';$('qty').textContent=z.qty?z.qty.toFixed(6):'—';$('notional').textContent=z.notional?'$'+fmt(z.notional):'—';$('margin').textContent=z.margin?'$'+fmt(z.margin):'—';$('dist').textContent=z.distPct?z.distPct.toFixed(2)+'%':'—';$('tpAuto').textContent=e&&s?'$'+fmt(tp):'—';$('slPnl').textContent=z.riskBudget?'-$'+fmt(slPnl):'—';$('tpPnl').textContent=z.qty?'+$'+fmt(tpPnl):'—';$('liq').textContent=e&&z.lev?'$'+fmt(liq):'—';$('ev').textContent=z.qty?(ev>=0?'+$':'-$')+fmt(Math.abs(ev)):'—';
+}
 async function loadAll(){
   try{
     $("updated").textContent="K線載入中…";$("tvchart").innerHTML="";tv=null;candle=null;ema20Line=null;ema50Line=null;volumeSeries=null;srLines=[];
