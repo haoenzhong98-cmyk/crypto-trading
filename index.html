@@ -28,8 +28,8 @@
 <section class="card"><div class="sectionTitle"><h2>🎯 策略訊號</h2><span class="badge" id="signalTime">—</span></div><div id="strategy"></div></section>
 <section class="card"><div class="sectionTitle"><h2>🧠 策略共識</h2><span class="muted">規則化模型</span></div><div id="consensus"></div></section>
 <section class="card wide"><div class="sectionTitle"><h2>📅 今日交易計畫</h2><span class="badge">自動更新</span></div><div class="plan" id="dailyPlan"></div></section><section class="card wide mobileSection" id="section-signals"><div class="sectionTitle"><h2>🤖 70% 高勝率模式 · 自動交易決策引擎</h2><span class="badge" id="engineStatus">分析中…</span></div><div id="engine"></div></section><section class="card wide"><div class="sectionTitle"><h2>🧪 高品質山寨幣雷達</h2><span class="badge" id="altStatus">掃描中…</span></div><div id="altRadar"></div></section><section class="card wide mobileSection" id="section-sniper"><div class="sectionTitle"><h2>🎯 山寨幣狙擊榜 · TOP 3</h2><span class="badge" id="sniperStatus">建立榜單中…</span></div><div id="sniperBoard"></div></section><section class="card wide"><div class="sectionTitle"><h2>🚀 A+ 一鍵交易方案卡</h2><span class="badge" id="bestStatus">掃描 BTC / ETH…</span></div><div id="bestTrade"></div></section>
-<section class="card wide mobileSection" id="section-calculator"><div class="sectionTitle"><h2>💰 自動交易計算系統</h2><span class="muted">勝率 → 槓桿 → 倉位 → 止損 → TP → 預估盈虧</span></div><div class="attackPanel" id="attackPanel"><div class="sectionTitle"><div><b>🔥 20～30% 進攻模式</b><div class="muted">提高收益目標，但不保證月收益；系統優先控制回撤。</div></div><span class="badge" id="attackBadge">STANDARD</span></div><div class="attackModes"><button type="button" class="attackMode" data-mode="safe" onclick="setAttackMode('safe')">🟢 保守<br><small>0.75～1%</small></button><button type="button" class="attackMode" data-mode="standard" onclick="setAttackMode('standard')">🟡 標準<br><small>1～1.5%</small></button><button type="button" class="attackMode active" data-mode="attack" onclick="setAttackMode('attack')">🔴 進攻<br><small>1.5～2%</small></button></div><div class="attackKpis"><div class="attackKpi"><span>目前單筆風險</span><b id="attackRisk">1.00%</b></div><div class="attackKpi"><span>今日最大回撤</span><b id="attackDailyDD">5.00%</b></div><div class="attackKpi"><span>連敗降檔</span><b id="attackStreak">3 單</b></div><div class="attackKpi"><span>目標 R:R</span><b id="attackRR">1.8～2.2R</b></div></div><div class="attackWarn">⚠️ 進攻模式不是「加槓桿就能賺更多」。只有 A+、多週期一致、波動可接受時才允許最高風險；連續虧損或當日回撤達上限會自動降風險 / 暫停訊號。</div></div><div class="form"><div><div class="muted">本金 USDT</div><input class="input" id="capital" type="number" value="1000"></div><div><div class="muted">進場價</div><input class="input" id="entry" type="number"></div><div><div class="muted">止損價</div><input class="input" id="stop" type="number"></div><div><div class="muted">風險 %</div><input class="input" id="risk" type="number" value="1.5" step=".1"></div></div><div class="form" style="margin-top:8px"><div><div class="muted">建議槓桿（自動）</div><input class="input" id="levInput" type="number" min="10" max="50" step="1"></div><div><div class="muted">回測勝率（自動）</div><input class="input" id="winInput" type="number" readonly></div><div><div class="muted">目標 R:R</div><input class="input" id="rrInput" type="number" value="2.2" min="1" step=".1"></div><div><div class="muted">手續費估算 %</div><input class="input" id="feeInput" type="number" value=".1" min="0" step=".01"></div></div><div class="calc"><div class="calcBox">最大可承受虧損 <b id="loss">—</b></div><div class="calcBox">建議數量 <b id="qty">—</b></div><div class="calcBox">倉位名目價值 <b id="notional">—</b></div><div class="calcBox">保證金需求 <b id="margin">—</b></div><div class="calcBox">止損距離 <b id="dist">—</b></div><div class="calcBox">自動 TP <b id="tpAuto">—</b></div><div class="calcBox">預估止損虧損 <b id="slPnl">—</b></div><div class="calcBox">預估 TP 獲利 <b id="tpPnl">—</b></div><div class="calcBox">簡化強平價 <b id="liq">—</b></div><div class="calcBox">單筆期望值 <b id="ev">—</b></div></div><div class="muted" style="margin-top:10px">回測勝率使用目前策略規則在近期 K 線上模擬訊號後計算，不等於未來勝率。強平價為簡化估算，實際數值會因交易所、維持保證金、手續費與模式而不同。</div></section>
-<section class="card wide mobileSection" id="section-settings"><h2>⚠️ 使用規則</h2><div class="rows"><div class="row"><span>趨勢</span><b>4H → 1H 優先，短週期只找進場點</b></div><div class="row"><span>進場</span><b>A+ 多週期一致 + 動能確認；非 A+ 一律 WAIT</b></div><div class="row"><span>風險</span><b>進攻模式 A+ 單筆最高 2%，連敗 / 回撤自動降檔</b></div><div class="row"><span>無訊號</span><b>WAIT，不強迫交易</b></div></div><div class="footer">資料來自 Binance 公開行情 API；圖表使用 Lightweight Charts。支撐/壓力與箭頭為規則模型自動偵測，不是保證反轉或獲利訊號。</div></section>
+<section class="card wide mobileSection" id="section-calculator"><div class="sectionTitle"><h2>💰 自動交易計算系統</h2><span class="muted">勝率 → 槓桿 → 倉位 → 止損 → TP → 預估盈虧</span></div><div class="attackPanel" id="attackPanel"><div class="sectionTitle"><div><b>🛡️ 逐倉進場資金管理</b><div class="muted">固定規則：每筆逐倉，單次進場最多使用目前總資產的 20%；止損風險上限為本次進場金額的 15%。</div></div><span class="badge">ISOLATED</span></div><div class="attackKpis"><div class="attackKpi"><span>總資產基準</span><b>1,000 USDT</b></div><div class="attackKpi"><span>單筆進場上限</span><b>20%</b></div><div class="attackKpi"><span>止損風險上限</span><b>15%</b></div><div class="attackKpi"><span>模式</span><b>逐倉</b></div></div><div class="attackWarn">📌 例如總資產 1,000 USDT：單筆最多投入 200 USDT 作為逐倉保證金；本單最大止損風險為 30 USDT。實際倉位會再依止損距離與策略槓桿自動反推，避免超過風險上限。</div></div><div class="form"><div><div class="muted">總資產 USDT（固定基準）</div><input class="input" id="capital" type="number" value="1000" readonly></div><div><div class="muted">進場價</div><input class="input" id="entry" type="number"></div><div><div class="muted">止損價</div><input class="input" id="stop" type="number"></div><div><div class="muted">止損風險（進場金額）</div><input class="input" id="risk" type="number" value="15" readonly></div></div><div class="form" style="margin-top:8px"><div><div class="muted">策略槓桿（自動）</div><input class="input" id="levInput" type="number" min="10" max="50" step="1"></div><div><div class="muted">回測勝率（自動）</div><input class="input" id="winInput" type="number" readonly></div><div><div class="muted">目標 R:R</div><input class="input" id="rrInput" type="number" value="2.2" min="1" step=".1"></div><div><div class="muted">手續費估算 %</div><input class="input" id="feeInput" type="number" value=".1" min="0" step=".01"></div></div><div class="calc"><div class="calcBox">最大可承受虧損 <b id="loss">—</b></div><div class="calcBox">建議數量 <b id="qty">—</b></div><div class="calcBox">倉位名目價值 <b id="notional">—</b></div><div class="calcBox">保證金需求 <b id="margin">—</b></div><div class="calcBox">止損距離 <b id="dist">—</b></div><div class="calcBox">自動 TP <b id="tpAuto">—</b></div><div class="calcBox">預估止損虧損 <b id="slPnl">—</b></div><div class="calcBox">預估 TP 獲利 <b id="tpPnl">—</b></div><div class="calcBox">簡化強平價 <b id="liq">—</b></div><div class="calcBox">單筆期望值 <b id="ev">—</b></div></div><div class="muted" style="margin-top:10px">回測勝率使用目前策略規則在近期 K 線上模擬訊號後計算，不等於未來勝率。逐倉進場上限固定為總資產 20%，止損風險上限為進場金額 15%；強平價仍為簡化估算。</div></section>
+<section class="card wide mobileSection" id="section-settings"><h2>⚠️ 使用規則</h2><div class="rows"><div class="row"><span>趨勢</span><b>4H → 1H 優先，短週期只找進場點</b></div><div class="row"><span>進場</span><b>A+ 多週期一致 + 動能確認；非 A+ 一律 WAIT</b></div><div class="row"><span>風險</span><b>逐倉單筆進場最多 20%，止損風險最多 15%</b></div><div class="row"><span>無訊號</span><b>WAIT，不強迫交易</b></div></div><div class="footer">資料來自 Binance 公開行情 API；圖表使用 Lightweight Charts。支撐/壓力與箭頭為規則模型自動偵測，不是保證反轉或獲利訊號。</div></section>
 </div></div>
 <script>
 const APIS=["https://api.binance.com/api/v3/klines","https://api1.binance.com/api/v3/klines","https://api2.binance.com/api/v3/klines","https://api3.binance.com/api/v3/klines"];let interval="1h",current={BTC:null,ETH:null},tv=null,candle=null,ema20Line=null,ema50Line=null,volumeSeries=null,srLines=[],signalMarkers=[];let showEMA20=true,showEMA50=true,showVolume=true,showSR=true,showSignals=true;
@@ -316,12 +316,591 @@ function renderPlan(){
   const pick=a.score>=b.score?"BTC":"ETH",d=pick==="BTC"?a:b,strong=d.score>=70||d.score<=30;
   $("dailyPlan").innerHTML="<div class='planBox'><h3>今日主策略：<span class='"+(d.score>=70?"up":d.score<=30?"dn":"flat")+"'>"+pick+" · "+(d.trend==="多"?"順勢偏多":d.trend==="空"?"順勢偏空":"區間等待")+"</span></h3><div class='check'>① 支撐：$"+fmt(d.support)+" · 壓力：$"+fmt(d.resistance)+"</div><div class='check'>② 等回踩支撐 / 壓力突破後回踩確認</div><div class='check'>③ 進場後止損固定，單筆最多風險 1%</div><div class='check'>④ TP1 至少 2R，達標後可分批落袋</div></div><div class='planBox'><h3>執行結論</h3><div class='check'>BTC：<b>"+Math.round(a.score)+"/100</b></div><div class='check'>ETH：<b>"+Math.round(b.score)+"/100</b></div><div class='check'>目前：<b>"+(strong?"有條件可交易":"WAIT，等待更好位置")+"</b></div><div class='check'>更新：<b>"+new Date().toLocaleTimeString("zh-TW")+"</b></div></div>"
 }
+function isolatedSizing(entry,stop,autoLev){
+  const equity=1000,margin=equity*.20,riskBudget=margin*.15,dist=Math.abs(entry-stop),stopPct=entry?dist/entry:0;
+  if(!entry||!stop||!dist)return{margin,riskBudget,qty:0,notional:0,lev:1,distPct:0};
+  const maxLevByRisk=riskBudget/(margin*stopPct),lev=Math.max(1,Math.min(50,Number(autoLev)||10,maxLevByRisk)),notional=margin*lev,qty=notional/entry;
+  return{margin,riskBudget,qty,notional,lev,distPct:stopPct*100};
+}
 function calc(){
-  const cap=+$("capital").value||0,e=+$("entry").value||0,s=+$("stop").value||0,r=+$("risk").value||0,rr=+$("rrInput").value||2,fee=(+$("feeInput").value||0)/100;
-  const wr=+$("winInput").value||50,lev=Math.max(10,Math.min(50,+$("levInput").value||10)),loss=cap*r/100,dist=Math.abs(e-s);
-  let q=dist?loss/dist:0;const maxQty=lev&&e?cap*lev/e:0;if(maxQty&&q>maxQty)q=maxQty;
-  const notional=q*e,margin=lev?notional/lev:0,feeCost=notional*fee*2,long=s<e,tp=long?e+(e-s)*rr:e-(s-e)*rr,slPnl=dist*q+feeCost,tpPnl=Math.abs(tp-e)*q-feeCost,liq=long?e*(1-1/lev+.005):e*(1+1/lev-.005),ev=(wr/100)*tpPnl-(1-wr/100)*slPnl;
-  $("loss").textContent="$"+fmt(loss);$("qty").textContent=q?q.toFixed(6):"—";$("notional").textContent=q?"$"+fmt(notional):"—";$("margin").textContent=q?"$"+fmt(margin):"—";$("dist").textContent=e&&s?(dist/e*100).toFixed(2)+"%":"—";$("tpAuto").textContent=e&&s?"$"+fmt(tp):"—";$("slPnl").textContent=q?"-$"+fmt(slPnl):"—";$("tpPnl").textContent=q?"+$"+fmt(tpPnl):"—";$("liq").textContent=e&&lev?"$"+fmt(liq):"—";$("ev").textContent=q?(ev>=0?"+$":"-$")+fmt(Math.abs(ev)):"—"
+  const e=+$('entry').value||0,s=+$('stop').value||0,rr=+$('rrInput').value||2,fee=(+$('feeInput').value||0)/100,wr=+$('winInput').value||50,autoLev=Math.max(1,Math.min(50,+$('levInput').value||10)),z=isolatedSizing(e,s,autoLev),fees=z.notional*fee*2,long=s<e,tp=long?e+(e-s)*rr:e-(s-e)*rr,slPnl=z.riskBudget+fees,tpPnl=Math.abs(tp-e)*z.qty-fees,liq=long?e*(1-1/z.lev+.005):e*(1+1/z.lev-.005),ev=(wr/100)*tpPnl-(1-wr/100)*slPnl;
+  $('capital').value='1000';$('risk').value='15';$('loss').textContent=z.riskBudget?'
+async function loadAll(){
+  try{
+    $("updated").textContent="K線載入中…";$("tvchart").innerHTML="";tv=null;candle=null;ema20Line=null;ema50Line=null;volumeSeries=null;srLines=[];
+    const b=await get("BTC",interval);
+    if(!b||b.length<20)throw Error("BTC K線資料不足");
+    const rb=renderAsset("btc","BTC",b);current.BTC=rb.d;window.chartData=b;await ensureChartLib();drawTV(b,rb);renderIndicators(b);
+    $("chartLabel").textContent="BTCUSDT · "+interval.toUpperCase();$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");
+    const bt=backtest(b),autoLev=leverageByWinRate(Math.round(bt.wr),Math.round(rb.d.score));$("winInput").value=Math.round(bt.wr);$("levInput").value=autoLev;renderStrategy(rb);
+    $("updated").textContent="K線已更新 · "+new Date().toLocaleTimeString("zh-TW");
+    const [e,b5,e5,b15,e15,b1,e1,b4,e4]=await Promise.allSettled([get("ETH",interval),get("BTC","5m"),get("ETH","5m"),get("BTC","15m"),get("ETH","15m"),get("BTC","1h"),get("ETH","1h"),get("BTC","4h"),get("ETH","4h")]);
+    const val=(r,fb)=>r.status==="fulfilled"?r.value:fb;
+    const eth=val(e,b),eb5=val(b5,b),ee5=val(e5,eb5),eb15=val(b15,b),ee15=val(e15,eb15),eb1=val(b1,b),ee1=val(e1,eb1),eb4=val(b4,b),ee4=val(e4,eb4);
+    const re=renderAsset("eth","ETH",eth);current.ETH=re.d;renderConsensus();renderPlan();
+    renderEngine([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    renderBestTrade([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    try{const alts=await scanAltcoins();renderAltRadar(alts);renderSniperBoard(alts)}catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
+    $("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);$("risk").value=15;$("rrInput").value=2.2;calc();
+  }catch(err){
+    console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");
+    $("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗：<br>"+(err?.message||"請重新整理頁面")+"</div>";
+  }
+}
+
+let attackMode="isolated";
+let attackState=JSON.parse(localStorage.getItem("cryptoAttackState")||'{"lossStreak":0,"dayPnl":0,"dayKey":""}');
+function attackConfig(){
+  const cfg={safe:{min:.75,max:1,rr:1.8,dd:3},standard:{min:1,max:1.5,rr:2,dd:4},attack:{min:1.5,max:2,rr:2.2,dd:5}}[attackMode]||{min:1,max:1.5,rr:2,dd:4};
+  const key=new Date().toISOString().slice(0,10);if(attackState.dayKey!==key){attackState.dayKey=key;attackState.dayPnl=0;attackState.lossStreak=0;saveAttackState()}
+  return cfg;
+}
+function saveAttackState(){localStorage.setItem("cryptoAttackState",JSON.stringify(attackState))}
+function setAttackMode(mode){attackMode=mode;localStorage.setItem("cryptoAttackMode",mode);document.querySelectorAll(".attackMode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));renderAttackPanel();calc()}
+function dynamicRisk(grade,agreement,volatility){
+  const cfg=attackConfig();let r=cfg.min;
+  if(grade==="A+"&&agreement>=90)r=cfg.max;
+  else if(grade==="A+"&&agreement>=80)r=Math.min(cfg.max,cfg.min+.25);
+  else if(grade==="A"&&agreement>=80)r=cfg.min;
+  else return 0;
+  if(volatility>=2)r=Math.min(r,1);if(volatility>=3)r=Math.min(r,.75);
+  if(attackState.lossStreak>=2)r=Math.min(r,.75);
+  if(attackState.dayPnl<=-cfg.dd)return 0;
+  return r;
+}
+function renderAttackPanel(){
+  const cfg=attackConfig(),r=dynamicRisk("A+",90,1);
+  const badge=attackMode==="attack"?"ATTACK":attackMode==="safe"?"SAFE":"STANDARD";
+  const b=$("attackBadge");if(b)b.textContent=badge;
+  document.querySelectorAll(".attackMode").forEach(x=>x.classList.toggle("active",x.dataset.mode===attackMode));
+  if($("attackRisk"))$("attackRisk").textContent=r.toFixed(2)+"%";if($("attackDailyDD"))$("attackDailyDD").textContent=cfg.dd.toFixed(2)+"%";if($("attackStreak"))$("attackStreak").textContent="3 單";if($("attackRR"))$("attackRR").textContent=cfg.rr.toFixed(1)+"R";
+}
+function recordAttackTrade(win,pnlPct){
+  attackState.dayPnl+=pnlPct;attackState.lossStreak=win?0:attackState.lossStreak+1;saveAttackState();renderAttackPanel();
+}
+function trailingPlan(entry,stop,side,atrValue){
+  const r=Math.abs(entry-stop),trail=Math.max(atrValue*1.1,r*.8);return{trail,breakeven:r*.9,partialR:1.2,runnerR:2.2};
+}
+
+let deferredInstall=null;
+const installBar=$("installBar"),installBtn=$("installBtn");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;installBar.style.display="flex"});
+if(installBtn)installBtn.onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installBar.style.display="none"}else{alert("iPhone：請點 Safari 下方「分享」→「加入主畫面」即可安裝。\nAndroid/Chrome：使用瀏覽器選單中的「安裝 App」或「加到主畫面」。")}};
+window.addEventListener("appinstalled",()=>{installBar.style.display="none";deferredInstall=null});
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["entry","stop","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);</script><nav class="mobileNav" id="mobileNav"><button type="button" data-target="market" class="active" onclick="mobileNavGo('market');return false"><b>📊</b>行情</button><button type="button" data-target="sniper" onclick="mobileNavGo('sniper');return false"><b>🎯</b>狙擊榜</button><button type="button" data-target="signals" onclick="mobileNavGo('signals');return false"><b>🤖</b>訊號</button><button type="button" data-target="calculator" onclick="mobileNavGo('calculator');return false"><b>🧮</b>計算器</button><button type="button" data-target="settings" onclick="mobileNavGo('settings');return false"><b>⚙️</b>設定</button></nav><script>function mobileNavGo(k){const ids={market:"section-market",sniper:"section-sniper",signals:"section-signals",calculator:"section-calculator",settings:"section-settings"};const t=document.getElementById(ids[k]);if(!t)return;document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===k));const top=Math.max(0,t.getBoundingClientRect().top+window.scrollY-66);window.scrollTo({top,behavior:"smooth"});}function syncMobileNav(){const map=[["market","section-market"],["sniper","section-sniper"],["signals","section-signals"],["calculator","section-calculator"],["settings","section-settings"]];let best="market",bestDist=Infinity;for(const [k,id] of map){const t=document.getElementById(id);if(!t)continue;const d=Math.abs(t.getBoundingClientRect().top-90);if(t.getBoundingClientRect().top<=150&&d<bestDist){best=k;bestDist=d;}}document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===best));}window.addEventListener("scroll",syncMobileNav,{passive:true});window.addEventListener("resize",syncMobileNav);</script></body></html>+fmt(z.riskBudget):'—';$('qty').textContent=z.qty?z.qty.toFixed(6):'—';$('notional').textContent=z.notional?'
+async function loadAll(){
+  try{
+    $("updated").textContent="K線載入中…";$("tvchart").innerHTML="";tv=null;candle=null;ema20Line=null;ema50Line=null;volumeSeries=null;srLines=[];
+    const b=await get("BTC",interval);
+    if(!b||b.length<20)throw Error("BTC K線資料不足");
+    const rb=renderAsset("btc","BTC",b);current.BTC=rb.d;window.chartData=b;await ensureChartLib();drawTV(b,rb);renderIndicators(b);
+    $("chartLabel").textContent="BTCUSDT · "+interval.toUpperCase();$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");
+    const bt=backtest(b),autoLev=leverageByWinRate(Math.round(bt.wr),Math.round(rb.d.score));$("winInput").value=Math.round(bt.wr);$("levInput").value=autoLev;renderStrategy(rb);
+    $("updated").textContent="K線已更新 · "+new Date().toLocaleTimeString("zh-TW");
+    const [e,b5,e5,b15,e15,b1,e1,b4,e4]=await Promise.allSettled([get("ETH",interval),get("BTC","5m"),get("ETH","5m"),get("BTC","15m"),get("ETH","15m"),get("BTC","1h"),get("ETH","1h"),get("BTC","4h"),get("ETH","4h")]);
+    const val=(r,fb)=>r.status==="fulfilled"?r.value:fb;
+    const eth=val(e,b),eb5=val(b5,b),ee5=val(e5,eb5),eb15=val(b15,b),ee15=val(e15,eb15),eb1=val(b1,b),ee1=val(e1,eb1),eb4=val(b4,b),ee4=val(e4,eb4);
+    const re=renderAsset("eth","ETH",eth);current.ETH=re.d;renderConsensus();renderPlan();
+    renderEngine([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    renderBestTrade([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    try{const alts=await scanAltcoins();renderAltRadar(alts);renderSniperBoard(alts)}catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
+    renderAttackPanel();$("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);const ac=attackConfig();$("risk").value=Math.min(ac.max,2);$("rrInput").value=ac.rr;calc();
+  }catch(err){
+    console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");
+    $("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗：<br>"+(err?.message||"請重新整理頁面")+"</div>";
+  }
+}
+
+let attackMode="attack";localStorage.setItem("cryptoAttackMode","attack");
+let attackState=JSON.parse(localStorage.getItem("cryptoAttackState")||'{"lossStreak":0,"dayPnl":0,"dayKey":""}');
+function attackConfig(){
+  const cfg={safe:{min:.75,max:1,rr:1.8,dd:3},standard:{min:1,max:1.5,rr:2,dd:4},attack:{min:1.5,max:2,rr:2.2,dd:5}}[attackMode]||{min:1,max:1.5,rr:2,dd:4};
+  const key=new Date().toISOString().slice(0,10);if(attackState.dayKey!==key){attackState.dayKey=key;attackState.dayPnl=0;attackState.lossStreak=0;saveAttackState()}
+  return cfg;
+}
+function saveAttackState(){localStorage.setItem("cryptoAttackState",JSON.stringify(attackState))}
+function setAttackMode(mode){attackMode=mode;localStorage.setItem("cryptoAttackMode",mode);document.querySelectorAll(".attackMode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));renderAttackPanel();calc()}
+function dynamicRisk(grade,agreement,volatility){
+  const cfg=attackConfig();let r=cfg.min;
+  if(grade==="A+"&&agreement>=90)r=cfg.max;
+  else if(grade==="A+"&&agreement>=80)r=Math.min(cfg.max,cfg.min+.25);
+  else if(grade==="A"&&agreement>=80)r=cfg.min;
+  else return 0;
+  if(volatility>=2)r=Math.min(r,1);if(volatility>=3)r=Math.min(r,.75);
+  if(attackState.lossStreak>=2)r=Math.min(r,.75);
+  if(attackState.dayPnl<=-cfg.dd)return 0;
+  return r;
+}
+function renderAttackPanel(){
+  const cfg=attackConfig(),r=dynamicRisk("A+",90,1);
+  const badge=attackMode==="attack"?"ATTACK":attackMode==="safe"?"SAFE":"STANDARD";
+  const b=$("attackBadge");if(b)b.textContent=badge;
+  document.querySelectorAll(".attackMode").forEach(x=>x.classList.toggle("active",x.dataset.mode===attackMode));
+  if($("attackRisk"))$("attackRisk").textContent=r.toFixed(2)+"%";if($("attackDailyDD"))$("attackDailyDD").textContent=cfg.dd.toFixed(2)+"%";if($("attackStreak"))$("attackStreak").textContent="3 單";if($("attackRR"))$("attackRR").textContent=cfg.rr.toFixed(1)+"R";
+}
+function recordAttackTrade(win,pnlPct){
+  attackState.dayPnl+=pnlPct;attackState.lossStreak=win?0:attackState.lossStreak+1;saveAttackState();renderAttackPanel();
+}
+function trailingPlan(entry,stop,side,atrValue){
+  const r=Math.abs(entry-stop),trail=Math.max(atrValue*1.1,r*.8);return{trail,breakeven:r*.9,partialR:1.2,runnerR:2.2};
+}
+
+let deferredInstall=null;
+const installBar=$("installBar"),installBtn=$("installBtn");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;installBar.style.display="flex"});
+if(installBtn)installBtn.onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installBar.style.display="none"}else{alert("iPhone：請點 Safari 下方「分享」→「加入主畫面」即可安裝。\nAndroid/Chrome：使用瀏覽器選單中的「安裝 App」或「加到主畫面」。")}};
+window.addEventListener("appinstalled",()=>{installBar.style.display="none";deferredInstall=null});
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);</script><nav class="mobileNav" id="mobileNav"><button type="button" data-target="market" class="active" onclick="mobileNavGo('market');return false"><b>📊</b>行情</button><button type="button" data-target="sniper" onclick="mobileNavGo('sniper');return false"><b>🎯</b>狙擊榜</button><button type="button" data-target="signals" onclick="mobileNavGo('signals');return false"><b>🤖</b>訊號</button><button type="button" data-target="calculator" onclick="mobileNavGo('calculator');return false"><b>🧮</b>計算器</button><button type="button" data-target="settings" onclick="mobileNavGo('settings');return false"><b>⚙️</b>設定</button></nav><script>function mobileNavGo(k){const ids={market:"section-market",sniper:"section-sniper",signals:"section-signals",calculator:"section-calculator",settings:"section-settings"};const t=document.getElementById(ids[k]);if(!t)return;document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===k));const top=Math.max(0,t.getBoundingClientRect().top+window.scrollY-66);window.scrollTo({top,behavior:"smooth"});}function syncMobileNav(){const map=[["market","section-market"],["sniper","section-sniper"],["signals","section-signals"],["calculator","section-calculator"],["settings","section-settings"]];let best="market",bestDist=Infinity;for(const [k,id] of map){const t=document.getElementById(id);if(!t)continue;const d=Math.abs(t.getBoundingClientRect().top-90);if(t.getBoundingClientRect().top<=150&&d<bestDist){best=k;bestDist=d;}}document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===best));}window.addEventListener("scroll",syncMobileNav,{passive:true});window.addEventListener("resize",syncMobileNav);</script></body></html>+fmt(z.notional):'—';$('margin').textContent=z.margin?'
+async function loadAll(){
+  try{
+    $("updated").textContent="K線載入中…";$("tvchart").innerHTML="";tv=null;candle=null;ema20Line=null;ema50Line=null;volumeSeries=null;srLines=[];
+    const b=await get("BTC",interval);
+    if(!b||b.length<20)throw Error("BTC K線資料不足");
+    const rb=renderAsset("btc","BTC",b);current.BTC=rb.d;window.chartData=b;await ensureChartLib();drawTV(b,rb);renderIndicators(b);
+    $("chartLabel").textContent="BTCUSDT · "+interval.toUpperCase();$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");
+    const bt=backtest(b),autoLev=leverageByWinRate(Math.round(bt.wr),Math.round(rb.d.score));$("winInput").value=Math.round(bt.wr);$("levInput").value=autoLev;renderStrategy(rb);
+    $("updated").textContent="K線已更新 · "+new Date().toLocaleTimeString("zh-TW");
+    const [e,b5,e5,b15,e15,b1,e1,b4,e4]=await Promise.allSettled([get("ETH",interval),get("BTC","5m"),get("ETH","5m"),get("BTC","15m"),get("ETH","15m"),get("BTC","1h"),get("ETH","1h"),get("BTC","4h"),get("ETH","4h")]);
+    const val=(r,fb)=>r.status==="fulfilled"?r.value:fb;
+    const eth=val(e,b),eb5=val(b5,b),ee5=val(e5,eb5),eb15=val(b15,b),ee15=val(e15,eb15),eb1=val(b1,b),ee1=val(e1,eb1),eb4=val(b4,b),ee4=val(e4,eb4);
+    const re=renderAsset("eth","ETH",eth);current.ETH=re.d;renderConsensus();renderPlan();
+    renderEngine([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    renderBestTrade([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    try{const alts=await scanAltcoins();renderAltRadar(alts);renderSniperBoard(alts)}catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
+    renderAttackPanel();$("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);const ac=attackConfig();$("risk").value=Math.min(ac.max,2);$("rrInput").value=ac.rr;calc();
+  }catch(err){
+    console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");
+    $("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗：<br>"+(err?.message||"請重新整理頁面")+"</div>";
+  }
+}
+
+let attackMode="attack";localStorage.setItem("cryptoAttackMode","attack");
+let attackState=JSON.parse(localStorage.getItem("cryptoAttackState")||'{"lossStreak":0,"dayPnl":0,"dayKey":""}');
+function attackConfig(){
+  const cfg={safe:{min:.75,max:1,rr:1.8,dd:3},standard:{min:1,max:1.5,rr:2,dd:4},attack:{min:1.5,max:2,rr:2.2,dd:5}}[attackMode]||{min:1,max:1.5,rr:2,dd:4};
+  const key=new Date().toISOString().slice(0,10);if(attackState.dayKey!==key){attackState.dayKey=key;attackState.dayPnl=0;attackState.lossStreak=0;saveAttackState()}
+  return cfg;
+}
+function saveAttackState(){localStorage.setItem("cryptoAttackState",JSON.stringify(attackState))}
+function setAttackMode(mode){attackMode=mode;localStorage.setItem("cryptoAttackMode",mode);document.querySelectorAll(".attackMode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));renderAttackPanel();calc()}
+function dynamicRisk(grade,agreement,volatility){
+  const cfg=attackConfig();let r=cfg.min;
+  if(grade==="A+"&&agreement>=90)r=cfg.max;
+  else if(grade==="A+"&&agreement>=80)r=Math.min(cfg.max,cfg.min+.25);
+  else if(grade==="A"&&agreement>=80)r=cfg.min;
+  else return 0;
+  if(volatility>=2)r=Math.min(r,1);if(volatility>=3)r=Math.min(r,.75);
+  if(attackState.lossStreak>=2)r=Math.min(r,.75);
+  if(attackState.dayPnl<=-cfg.dd)return 0;
+  return r;
+}
+function renderAttackPanel(){
+  const cfg=attackConfig(),r=dynamicRisk("A+",90,1);
+  const badge=attackMode==="attack"?"ATTACK":attackMode==="safe"?"SAFE":"STANDARD";
+  const b=$("attackBadge");if(b)b.textContent=badge;
+  document.querySelectorAll(".attackMode").forEach(x=>x.classList.toggle("active",x.dataset.mode===attackMode));
+  if($("attackRisk"))$("attackRisk").textContent=r.toFixed(2)+"%";if($("attackDailyDD"))$("attackDailyDD").textContent=cfg.dd.toFixed(2)+"%";if($("attackStreak"))$("attackStreak").textContent="3 單";if($("attackRR"))$("attackRR").textContent=cfg.rr.toFixed(1)+"R";
+}
+function recordAttackTrade(win,pnlPct){
+  attackState.dayPnl+=pnlPct;attackState.lossStreak=win?0:attackState.lossStreak+1;saveAttackState();renderAttackPanel();
+}
+function trailingPlan(entry,stop,side,atrValue){
+  const r=Math.abs(entry-stop),trail=Math.max(atrValue*1.1,r*.8);return{trail,breakeven:r*.9,partialR:1.2,runnerR:2.2};
+}
+
+let deferredInstall=null;
+const installBar=$("installBar"),installBtn=$("installBtn");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;installBar.style.display="flex"});
+if(installBtn)installBtn.onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installBar.style.display="none"}else{alert("iPhone：請點 Safari 下方「分享」→「加入主畫面」即可安裝。\nAndroid/Chrome：使用瀏覽器選單中的「安裝 App」或「加到主畫面」。")}};
+window.addEventListener("appinstalled",()=>{installBar.style.display="none";deferredInstall=null});
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);</script><nav class="mobileNav" id="mobileNav"><button type="button" data-target="market" class="active" onclick="mobileNavGo('market');return false"><b>📊</b>行情</button><button type="button" data-target="sniper" onclick="mobileNavGo('sniper');return false"><b>🎯</b>狙擊榜</button><button type="button" data-target="signals" onclick="mobileNavGo('signals');return false"><b>🤖</b>訊號</button><button type="button" data-target="calculator" onclick="mobileNavGo('calculator');return false"><b>🧮</b>計算器</button><button type="button" data-target="settings" onclick="mobileNavGo('settings');return false"><b>⚙️</b>設定</button></nav><script>function mobileNavGo(k){const ids={market:"section-market",sniper:"section-sniper",signals:"section-signals",calculator:"section-calculator",settings:"section-settings"};const t=document.getElementById(ids[k]);if(!t)return;document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===k));const top=Math.max(0,t.getBoundingClientRect().top+window.scrollY-66);window.scrollTo({top,behavior:"smooth"});}function syncMobileNav(){const map=[["market","section-market"],["sniper","section-sniper"],["signals","section-signals"],["calculator","section-calculator"],["settings","section-settings"]];let best="market",bestDist=Infinity;for(const [k,id] of map){const t=document.getElementById(id);if(!t)continue;const d=Math.abs(t.getBoundingClientRect().top-90);if(t.getBoundingClientRect().top<=150&&d<bestDist){best=k;bestDist=d;}}document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===best));}window.addEventListener("scroll",syncMobileNav,{passive:true});window.addEventListener("resize",syncMobileNav);</script></body></html>+fmt(z.margin):'—';$('dist').textContent=z.distPct?z.distPct.toFixed(2)+'%':'—';$('tpAuto').textContent=e&&s?'
+async function loadAll(){
+  try{
+    $("updated").textContent="K線載入中…";$("tvchart").innerHTML="";tv=null;candle=null;ema20Line=null;ema50Line=null;volumeSeries=null;srLines=[];
+    const b=await get("BTC",interval);
+    if(!b||b.length<20)throw Error("BTC K線資料不足");
+    const rb=renderAsset("btc","BTC",b);current.BTC=rb.d;window.chartData=b;await ensureChartLib();drawTV(b,rb);renderIndicators(b);
+    $("chartLabel").textContent="BTCUSDT · "+interval.toUpperCase();$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");
+    const bt=backtest(b),autoLev=leverageByWinRate(Math.round(bt.wr),Math.round(rb.d.score));$("winInput").value=Math.round(bt.wr);$("levInput").value=autoLev;renderStrategy(rb);
+    $("updated").textContent="K線已更新 · "+new Date().toLocaleTimeString("zh-TW");
+    const [e,b5,e5,b15,e15,b1,e1,b4,e4]=await Promise.allSettled([get("ETH",interval),get("BTC","5m"),get("ETH","5m"),get("BTC","15m"),get("ETH","15m"),get("BTC","1h"),get("ETH","1h"),get("BTC","4h"),get("ETH","4h")]);
+    const val=(r,fb)=>r.status==="fulfilled"?r.value:fb;
+    const eth=val(e,b),eb5=val(b5,b),ee5=val(e5,eb5),eb15=val(b15,b),ee15=val(e15,eb15),eb1=val(b1,b),ee1=val(e1,eb1),eb4=val(b4,b),ee4=val(e4,eb4);
+    const re=renderAsset("eth","ETH",eth);current.ETH=re.d;renderConsensus();renderPlan();
+    renderEngine([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    renderBestTrade([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    try{const alts=await scanAltcoins();renderAltRadar(alts);renderSniperBoard(alts)}catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
+    renderAttackPanel();$("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);const ac=attackConfig();$("risk").value=Math.min(ac.max,2);$("rrInput").value=ac.rr;calc();
+  }catch(err){
+    console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");
+    $("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗：<br>"+(err?.message||"請重新整理頁面")+"</div>";
+  }
+}
+
+let attackMode="attack";localStorage.setItem("cryptoAttackMode","attack");
+let attackState=JSON.parse(localStorage.getItem("cryptoAttackState")||'{"lossStreak":0,"dayPnl":0,"dayKey":""}');
+function attackConfig(){
+  const cfg={safe:{min:.75,max:1,rr:1.8,dd:3},standard:{min:1,max:1.5,rr:2,dd:4},attack:{min:1.5,max:2,rr:2.2,dd:5}}[attackMode]||{min:1,max:1.5,rr:2,dd:4};
+  const key=new Date().toISOString().slice(0,10);if(attackState.dayKey!==key){attackState.dayKey=key;attackState.dayPnl=0;attackState.lossStreak=0;saveAttackState()}
+  return cfg;
+}
+function saveAttackState(){localStorage.setItem("cryptoAttackState",JSON.stringify(attackState))}
+function setAttackMode(mode){attackMode=mode;localStorage.setItem("cryptoAttackMode",mode);document.querySelectorAll(".attackMode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));renderAttackPanel();calc()}
+function dynamicRisk(grade,agreement,volatility){
+  const cfg=attackConfig();let r=cfg.min;
+  if(grade==="A+"&&agreement>=90)r=cfg.max;
+  else if(grade==="A+"&&agreement>=80)r=Math.min(cfg.max,cfg.min+.25);
+  else if(grade==="A"&&agreement>=80)r=cfg.min;
+  else return 0;
+  if(volatility>=2)r=Math.min(r,1);if(volatility>=3)r=Math.min(r,.75);
+  if(attackState.lossStreak>=2)r=Math.min(r,.75);
+  if(attackState.dayPnl<=-cfg.dd)return 0;
+  return r;
+}
+function renderAttackPanel(){
+  const cfg=attackConfig(),r=dynamicRisk("A+",90,1);
+  const badge=attackMode==="attack"?"ATTACK":attackMode==="safe"?"SAFE":"STANDARD";
+  const b=$("attackBadge");if(b)b.textContent=badge;
+  document.querySelectorAll(".attackMode").forEach(x=>x.classList.toggle("active",x.dataset.mode===attackMode));
+  if($("attackRisk"))$("attackRisk").textContent=r.toFixed(2)+"%";if($("attackDailyDD"))$("attackDailyDD").textContent=cfg.dd.toFixed(2)+"%";if($("attackStreak"))$("attackStreak").textContent="3 單";if($("attackRR"))$("attackRR").textContent=cfg.rr.toFixed(1)+"R";
+}
+function recordAttackTrade(win,pnlPct){
+  attackState.dayPnl+=pnlPct;attackState.lossStreak=win?0:attackState.lossStreak+1;saveAttackState();renderAttackPanel();
+}
+function trailingPlan(entry,stop,side,atrValue){
+  const r=Math.abs(entry-stop),trail=Math.max(atrValue*1.1,r*.8);return{trail,breakeven:r*.9,partialR:1.2,runnerR:2.2};
+}
+
+let deferredInstall=null;
+const installBar=$("installBar"),installBtn=$("installBtn");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;installBar.style.display="flex"});
+if(installBtn)installBtn.onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installBar.style.display="none"}else{alert("iPhone：請點 Safari 下方「分享」→「加入主畫面」即可安裝。\nAndroid/Chrome：使用瀏覽器選單中的「安裝 App」或「加到主畫面」。")}};
+window.addEventListener("appinstalled",()=>{installBar.style.display="none";deferredInstall=null});
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);</script><nav class="mobileNav" id="mobileNav"><button type="button" data-target="market" class="active" onclick="mobileNavGo('market');return false"><b>📊</b>行情</button><button type="button" data-target="sniper" onclick="mobileNavGo('sniper');return false"><b>🎯</b>狙擊榜</button><button type="button" data-target="signals" onclick="mobileNavGo('signals');return false"><b>🤖</b>訊號</button><button type="button" data-target="calculator" onclick="mobileNavGo('calculator');return false"><b>🧮</b>計算器</button><button type="button" data-target="settings" onclick="mobileNavGo('settings');return false"><b>⚙️</b>設定</button></nav><script>function mobileNavGo(k){const ids={market:"section-market",sniper:"section-sniper",signals:"section-signals",calculator:"section-calculator",settings:"section-settings"};const t=document.getElementById(ids[k]);if(!t)return;document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===k));const top=Math.max(0,t.getBoundingClientRect().top+window.scrollY-66);window.scrollTo({top,behavior:"smooth"});}function syncMobileNav(){const map=[["market","section-market"],["sniper","section-sniper"],["signals","section-signals"],["calculator","section-calculator"],["settings","section-settings"]];let best="market",bestDist=Infinity;for(const [k,id] of map){const t=document.getElementById(id);if(!t)continue;const d=Math.abs(t.getBoundingClientRect().top-90);if(t.getBoundingClientRect().top<=150&&d<bestDist){best=k;bestDist=d;}}document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===best));}window.addEventListener("scroll",syncMobileNav,{passive:true});window.addEventListener("resize",syncMobileNav);</script></body></html>+fmt(tp):'—';$('slPnl').textContent=z.riskBudget?'-
+async function loadAll(){
+  try{
+    $("updated").textContent="K線載入中…";$("tvchart").innerHTML="";tv=null;candle=null;ema20Line=null;ema50Line=null;volumeSeries=null;srLines=[];
+    const b=await get("BTC",interval);
+    if(!b||b.length<20)throw Error("BTC K線資料不足");
+    const rb=renderAsset("btc","BTC",b);current.BTC=rb.d;window.chartData=b;await ensureChartLib();drawTV(b,rb);renderIndicators(b);
+    $("chartLabel").textContent="BTCUSDT · "+interval.toUpperCase();$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");
+    const bt=backtest(b),autoLev=leverageByWinRate(Math.round(bt.wr),Math.round(rb.d.score));$("winInput").value=Math.round(bt.wr);$("levInput").value=autoLev;renderStrategy(rb);
+    $("updated").textContent="K線已更新 · "+new Date().toLocaleTimeString("zh-TW");
+    const [e,b5,e5,b15,e15,b1,e1,b4,e4]=await Promise.allSettled([get("ETH",interval),get("BTC","5m"),get("ETH","5m"),get("BTC","15m"),get("ETH","15m"),get("BTC","1h"),get("ETH","1h"),get("BTC","4h"),get("ETH","4h")]);
+    const val=(r,fb)=>r.status==="fulfilled"?r.value:fb;
+    const eth=val(e,b),eb5=val(b5,b),ee5=val(e5,eb5),eb15=val(b15,b),ee15=val(e15,eb15),eb1=val(b1,b),ee1=val(e1,eb1),eb4=val(b4,b),ee4=val(e4,eb4);
+    const re=renderAsset("eth","ETH",eth);current.ETH=re.d;renderConsensus();renderPlan();
+    renderEngine([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    renderBestTrade([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    try{const alts=await scanAltcoins();renderAltRadar(alts);renderSniperBoard(alts)}catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
+    renderAttackPanel();$("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);const ac=attackConfig();$("risk").value=Math.min(ac.max,2);$("rrInput").value=ac.rr;calc();
+  }catch(err){
+    console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");
+    $("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗：<br>"+(err?.message||"請重新整理頁面")+"</div>";
+  }
+}
+
+let attackMode="attack";localStorage.setItem("cryptoAttackMode","attack");
+let attackState=JSON.parse(localStorage.getItem("cryptoAttackState")||'{"lossStreak":0,"dayPnl":0,"dayKey":""}');
+function attackConfig(){
+  const cfg={safe:{min:.75,max:1,rr:1.8,dd:3},standard:{min:1,max:1.5,rr:2,dd:4},attack:{min:1.5,max:2,rr:2.2,dd:5}}[attackMode]||{min:1,max:1.5,rr:2,dd:4};
+  const key=new Date().toISOString().slice(0,10);if(attackState.dayKey!==key){attackState.dayKey=key;attackState.dayPnl=0;attackState.lossStreak=0;saveAttackState()}
+  return cfg;
+}
+function saveAttackState(){localStorage.setItem("cryptoAttackState",JSON.stringify(attackState))}
+function setAttackMode(mode){attackMode=mode;localStorage.setItem("cryptoAttackMode",mode);document.querySelectorAll(".attackMode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));renderAttackPanel();calc()}
+function dynamicRisk(grade,agreement,volatility){
+  const cfg=attackConfig();let r=cfg.min;
+  if(grade==="A+"&&agreement>=90)r=cfg.max;
+  else if(grade==="A+"&&agreement>=80)r=Math.min(cfg.max,cfg.min+.25);
+  else if(grade==="A"&&agreement>=80)r=cfg.min;
+  else return 0;
+  if(volatility>=2)r=Math.min(r,1);if(volatility>=3)r=Math.min(r,.75);
+  if(attackState.lossStreak>=2)r=Math.min(r,.75);
+  if(attackState.dayPnl<=-cfg.dd)return 0;
+  return r;
+}
+function renderAttackPanel(){
+  const cfg=attackConfig(),r=dynamicRisk("A+",90,1);
+  const badge=attackMode==="attack"?"ATTACK":attackMode==="safe"?"SAFE":"STANDARD";
+  const b=$("attackBadge");if(b)b.textContent=badge;
+  document.querySelectorAll(".attackMode").forEach(x=>x.classList.toggle("active",x.dataset.mode===attackMode));
+  if($("attackRisk"))$("attackRisk").textContent=r.toFixed(2)+"%";if($("attackDailyDD"))$("attackDailyDD").textContent=cfg.dd.toFixed(2)+"%";if($("attackStreak"))$("attackStreak").textContent="3 單";if($("attackRR"))$("attackRR").textContent=cfg.rr.toFixed(1)+"R";
+}
+function recordAttackTrade(win,pnlPct){
+  attackState.dayPnl+=pnlPct;attackState.lossStreak=win?0:attackState.lossStreak+1;saveAttackState();renderAttackPanel();
+}
+function trailingPlan(entry,stop,side,atrValue){
+  const r=Math.abs(entry-stop),trail=Math.max(atrValue*1.1,r*.8);return{trail,breakeven:r*.9,partialR:1.2,runnerR:2.2};
+}
+
+let deferredInstall=null;
+const installBar=$("installBar"),installBtn=$("installBtn");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;installBar.style.display="flex"});
+if(installBtn)installBtn.onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installBar.style.display="none"}else{alert("iPhone：請點 Safari 下方「分享」→「加入主畫面」即可安裝。\nAndroid/Chrome：使用瀏覽器選單中的「安裝 App」或「加到主畫面」。")}};
+window.addEventListener("appinstalled",()=>{installBar.style.display="none";deferredInstall=null});
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);</script><nav class="mobileNav" id="mobileNav"><button type="button" data-target="market" class="active" onclick="mobileNavGo('market');return false"><b>📊</b>行情</button><button type="button" data-target="sniper" onclick="mobileNavGo('sniper');return false"><b>🎯</b>狙擊榜</button><button type="button" data-target="signals" onclick="mobileNavGo('signals');return false"><b>🤖</b>訊號</button><button type="button" data-target="calculator" onclick="mobileNavGo('calculator');return false"><b>🧮</b>計算器</button><button type="button" data-target="settings" onclick="mobileNavGo('settings');return false"><b>⚙️</b>設定</button></nav><script>function mobileNavGo(k){const ids={market:"section-market",sniper:"section-sniper",signals:"section-signals",calculator:"section-calculator",settings:"section-settings"};const t=document.getElementById(ids[k]);if(!t)return;document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===k));const top=Math.max(0,t.getBoundingClientRect().top+window.scrollY-66);window.scrollTo({top,behavior:"smooth"});}function syncMobileNav(){const map=[["market","section-market"],["sniper","section-sniper"],["signals","section-signals"],["calculator","section-calculator"],["settings","section-settings"]];let best="market",bestDist=Infinity;for(const [k,id] of map){const t=document.getElementById(id);if(!t)continue;const d=Math.abs(t.getBoundingClientRect().top-90);if(t.getBoundingClientRect().top<=150&&d<bestDist){best=k;bestDist=d;}}document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===best));}window.addEventListener("scroll",syncMobileNav,{passive:true});window.addEventListener("resize",syncMobileNav);</script></body></html>+fmt(slPnl):'—';$('tpPnl').textContent=z.qty?'+
+async function loadAll(){
+  try{
+    $("updated").textContent="K線載入中…";$("tvchart").innerHTML="";tv=null;candle=null;ema20Line=null;ema50Line=null;volumeSeries=null;srLines=[];
+    const b=await get("BTC",interval);
+    if(!b||b.length<20)throw Error("BTC K線資料不足");
+    const rb=renderAsset("btc","BTC",b);current.BTC=rb.d;window.chartData=b;await ensureChartLib();drawTV(b,rb);renderIndicators(b);
+    $("chartLabel").textContent="BTCUSDT · "+interval.toUpperCase();$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");
+    const bt=backtest(b),autoLev=leverageByWinRate(Math.round(bt.wr),Math.round(rb.d.score));$("winInput").value=Math.round(bt.wr);$("levInput").value=autoLev;renderStrategy(rb);
+    $("updated").textContent="K線已更新 · "+new Date().toLocaleTimeString("zh-TW");
+    const [e,b5,e5,b15,e15,b1,e1,b4,e4]=await Promise.allSettled([get("ETH",interval),get("BTC","5m"),get("ETH","5m"),get("BTC","15m"),get("ETH","15m"),get("BTC","1h"),get("ETH","1h"),get("BTC","4h"),get("ETH","4h")]);
+    const val=(r,fb)=>r.status==="fulfilled"?r.value:fb;
+    const eth=val(e,b),eb5=val(b5,b),ee5=val(e5,eb5),eb15=val(b15,b),ee15=val(e15,eb15),eb1=val(b1,b),ee1=val(e1,eb1),eb4=val(b4,b),ee4=val(e4,eb4);
+    const re=renderAsset("eth","ETH",eth);current.ETH=re.d;renderConsensus();renderPlan();
+    renderEngine([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    renderBestTrade([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    try{const alts=await scanAltcoins();renderAltRadar(alts);renderSniperBoard(alts)}catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
+    renderAttackPanel();$("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);const ac=attackConfig();$("risk").value=Math.min(ac.max,2);$("rrInput").value=ac.rr;calc();
+  }catch(err){
+    console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");
+    $("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗：<br>"+(err?.message||"請重新整理頁面")+"</div>";
+  }
+}
+
+let attackMode="attack";localStorage.setItem("cryptoAttackMode","attack");
+let attackState=JSON.parse(localStorage.getItem("cryptoAttackState")||'{"lossStreak":0,"dayPnl":0,"dayKey":""}');
+function attackConfig(){
+  const cfg={safe:{min:.75,max:1,rr:1.8,dd:3},standard:{min:1,max:1.5,rr:2,dd:4},attack:{min:1.5,max:2,rr:2.2,dd:5}}[attackMode]||{min:1,max:1.5,rr:2,dd:4};
+  const key=new Date().toISOString().slice(0,10);if(attackState.dayKey!==key){attackState.dayKey=key;attackState.dayPnl=0;attackState.lossStreak=0;saveAttackState()}
+  return cfg;
+}
+function saveAttackState(){localStorage.setItem("cryptoAttackState",JSON.stringify(attackState))}
+function setAttackMode(mode){attackMode=mode;localStorage.setItem("cryptoAttackMode",mode);document.querySelectorAll(".attackMode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));renderAttackPanel();calc()}
+function dynamicRisk(grade,agreement,volatility){
+  const cfg=attackConfig();let r=cfg.min;
+  if(grade==="A+"&&agreement>=90)r=cfg.max;
+  else if(grade==="A+"&&agreement>=80)r=Math.min(cfg.max,cfg.min+.25);
+  else if(grade==="A"&&agreement>=80)r=cfg.min;
+  else return 0;
+  if(volatility>=2)r=Math.min(r,1);if(volatility>=3)r=Math.min(r,.75);
+  if(attackState.lossStreak>=2)r=Math.min(r,.75);
+  if(attackState.dayPnl<=-cfg.dd)return 0;
+  return r;
+}
+function renderAttackPanel(){
+  const cfg=attackConfig(),r=dynamicRisk("A+",90,1);
+  const badge=attackMode==="attack"?"ATTACK":attackMode==="safe"?"SAFE":"STANDARD";
+  const b=$("attackBadge");if(b)b.textContent=badge;
+  document.querySelectorAll(".attackMode").forEach(x=>x.classList.toggle("active",x.dataset.mode===attackMode));
+  if($("attackRisk"))$("attackRisk").textContent=r.toFixed(2)+"%";if($("attackDailyDD"))$("attackDailyDD").textContent=cfg.dd.toFixed(2)+"%";if($("attackStreak"))$("attackStreak").textContent="3 單";if($("attackRR"))$("attackRR").textContent=cfg.rr.toFixed(1)+"R";
+}
+function recordAttackTrade(win,pnlPct){
+  attackState.dayPnl+=pnlPct;attackState.lossStreak=win?0:attackState.lossStreak+1;saveAttackState();renderAttackPanel();
+}
+function trailingPlan(entry,stop,side,atrValue){
+  const r=Math.abs(entry-stop),trail=Math.max(atrValue*1.1,r*.8);return{trail,breakeven:r*.9,partialR:1.2,runnerR:2.2};
+}
+
+let deferredInstall=null;
+const installBar=$("installBar"),installBtn=$("installBtn");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;installBar.style.display="flex"});
+if(installBtn)installBtn.onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installBar.style.display="none"}else{alert("iPhone：請點 Safari 下方「分享」→「加入主畫面」即可安裝。\nAndroid/Chrome：使用瀏覽器選單中的「安裝 App」或「加到主畫面」。")}};
+window.addEventListener("appinstalled",()=>{installBar.style.display="none";deferredInstall=null});
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);</script><nav class="mobileNav" id="mobileNav"><button type="button" data-target="market" class="active" onclick="mobileNavGo('market');return false"><b>📊</b>行情</button><button type="button" data-target="sniper" onclick="mobileNavGo('sniper');return false"><b>🎯</b>狙擊榜</button><button type="button" data-target="signals" onclick="mobileNavGo('signals');return false"><b>🤖</b>訊號</button><button type="button" data-target="calculator" onclick="mobileNavGo('calculator');return false"><b>🧮</b>計算器</button><button type="button" data-target="settings" onclick="mobileNavGo('settings');return false"><b>⚙️</b>設定</button></nav><script>function mobileNavGo(k){const ids={market:"section-market",sniper:"section-sniper",signals:"section-signals",calculator:"section-calculator",settings:"section-settings"};const t=document.getElementById(ids[k]);if(!t)return;document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===k));const top=Math.max(0,t.getBoundingClientRect().top+window.scrollY-66);window.scrollTo({top,behavior:"smooth"});}function syncMobileNav(){const map=[["market","section-market"],["sniper","section-sniper"],["signals","section-signals"],["calculator","section-calculator"],["settings","section-settings"]];let best="market",bestDist=Infinity;for(const [k,id] of map){const t=document.getElementById(id);if(!t)continue;const d=Math.abs(t.getBoundingClientRect().top-90);if(t.getBoundingClientRect().top<=150&&d<bestDist){best=k;bestDist=d;}}document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===best));}window.addEventListener("scroll",syncMobileNav,{passive:true});window.addEventListener("resize",syncMobileNav);</script></body></html>+fmt(tpPnl):'—';$('liq').textContent=e&&z.lev?'
+async function loadAll(){
+  try{
+    $("updated").textContent="K線載入中…";$("tvchart").innerHTML="";tv=null;candle=null;ema20Line=null;ema50Line=null;volumeSeries=null;srLines=[];
+    const b=await get("BTC",interval);
+    if(!b||b.length<20)throw Error("BTC K線資料不足");
+    const rb=renderAsset("btc","BTC",b);current.BTC=rb.d;window.chartData=b;await ensureChartLib();drawTV(b,rb);renderIndicators(b);
+    $("chartLabel").textContent="BTCUSDT · "+interval.toUpperCase();$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");
+    const bt=backtest(b),autoLev=leverageByWinRate(Math.round(bt.wr),Math.round(rb.d.score));$("winInput").value=Math.round(bt.wr);$("levInput").value=autoLev;renderStrategy(rb);
+    $("updated").textContent="K線已更新 · "+new Date().toLocaleTimeString("zh-TW");
+    const [e,b5,e5,b15,e15,b1,e1,b4,e4]=await Promise.allSettled([get("ETH",interval),get("BTC","5m"),get("ETH","5m"),get("BTC","15m"),get("ETH","15m"),get("BTC","1h"),get("ETH","1h"),get("BTC","4h"),get("ETH","4h")]);
+    const val=(r,fb)=>r.status==="fulfilled"?r.value:fb;
+    const eth=val(e,b),eb5=val(b5,b),ee5=val(e5,eb5),eb15=val(b15,b),ee15=val(e15,eb15),eb1=val(b1,b),ee1=val(e1,eb1),eb4=val(b4,b),ee4=val(e4,eb4);
+    const re=renderAsset("eth","ETH",eth);current.ETH=re.d;renderConsensus();renderPlan();
+    renderEngine([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    renderBestTrade([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    try{const alts=await scanAltcoins();renderAltRadar(alts);renderSniperBoard(alts)}catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
+    renderAttackPanel();$("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);const ac=attackConfig();$("risk").value=Math.min(ac.max,2);$("rrInput").value=ac.rr;calc();
+  }catch(err){
+    console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");
+    $("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗：<br>"+(err?.message||"請重新整理頁面")+"</div>";
+  }
+}
+
+let attackMode="attack";localStorage.setItem("cryptoAttackMode","attack");
+let attackState=JSON.parse(localStorage.getItem("cryptoAttackState")||'{"lossStreak":0,"dayPnl":0,"dayKey":""}');
+function attackConfig(){
+  const cfg={safe:{min:.75,max:1,rr:1.8,dd:3},standard:{min:1,max:1.5,rr:2,dd:4},attack:{min:1.5,max:2,rr:2.2,dd:5}}[attackMode]||{min:1,max:1.5,rr:2,dd:4};
+  const key=new Date().toISOString().slice(0,10);if(attackState.dayKey!==key){attackState.dayKey=key;attackState.dayPnl=0;attackState.lossStreak=0;saveAttackState()}
+  return cfg;
+}
+function saveAttackState(){localStorage.setItem("cryptoAttackState",JSON.stringify(attackState))}
+function setAttackMode(mode){attackMode=mode;localStorage.setItem("cryptoAttackMode",mode);document.querySelectorAll(".attackMode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));renderAttackPanel();calc()}
+function dynamicRisk(grade,agreement,volatility){
+  const cfg=attackConfig();let r=cfg.min;
+  if(grade==="A+"&&agreement>=90)r=cfg.max;
+  else if(grade==="A+"&&agreement>=80)r=Math.min(cfg.max,cfg.min+.25);
+  else if(grade==="A"&&agreement>=80)r=cfg.min;
+  else return 0;
+  if(volatility>=2)r=Math.min(r,1);if(volatility>=3)r=Math.min(r,.75);
+  if(attackState.lossStreak>=2)r=Math.min(r,.75);
+  if(attackState.dayPnl<=-cfg.dd)return 0;
+  return r;
+}
+function renderAttackPanel(){
+  const cfg=attackConfig(),r=dynamicRisk("A+",90,1);
+  const badge=attackMode==="attack"?"ATTACK":attackMode==="safe"?"SAFE":"STANDARD";
+  const b=$("attackBadge");if(b)b.textContent=badge;
+  document.querySelectorAll(".attackMode").forEach(x=>x.classList.toggle("active",x.dataset.mode===attackMode));
+  if($("attackRisk"))$("attackRisk").textContent=r.toFixed(2)+"%";if($("attackDailyDD"))$("attackDailyDD").textContent=cfg.dd.toFixed(2)+"%";if($("attackStreak"))$("attackStreak").textContent="3 單";if($("attackRR"))$("attackRR").textContent=cfg.rr.toFixed(1)+"R";
+}
+function recordAttackTrade(win,pnlPct){
+  attackState.dayPnl+=pnlPct;attackState.lossStreak=win?0:attackState.lossStreak+1;saveAttackState();renderAttackPanel();
+}
+function trailingPlan(entry,stop,side,atrValue){
+  const r=Math.abs(entry-stop),trail=Math.max(atrValue*1.1,r*.8);return{trail,breakeven:r*.9,partialR:1.2,runnerR:2.2};
+}
+
+let deferredInstall=null;
+const installBar=$("installBar"),installBtn=$("installBtn");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;installBar.style.display="flex"});
+if(installBtn)installBtn.onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installBar.style.display="none"}else{alert("iPhone：請點 Safari 下方「分享」→「加入主畫面」即可安裝。\nAndroid/Chrome：使用瀏覽器選單中的「安裝 App」或「加到主畫面」。")}};
+window.addEventListener("appinstalled",()=>{installBar.style.display="none";deferredInstall=null});
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);</script><nav class="mobileNav" id="mobileNav"><button type="button" data-target="market" class="active" onclick="mobileNavGo('market');return false"><b>📊</b>行情</button><button type="button" data-target="sniper" onclick="mobileNavGo('sniper');return false"><b>🎯</b>狙擊榜</button><button type="button" data-target="signals" onclick="mobileNavGo('signals');return false"><b>🤖</b>訊號</button><button type="button" data-target="calculator" onclick="mobileNavGo('calculator');return false"><b>🧮</b>計算器</button><button type="button" data-target="settings" onclick="mobileNavGo('settings');return false"><b>⚙️</b>設定</button></nav><script>function mobileNavGo(k){const ids={market:"section-market",sniper:"section-sniper",signals:"section-signals",calculator:"section-calculator",settings:"section-settings"};const t=document.getElementById(ids[k]);if(!t)return;document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===k));const top=Math.max(0,t.getBoundingClientRect().top+window.scrollY-66);window.scrollTo({top,behavior:"smooth"});}function syncMobileNav(){const map=[["market","section-market"],["sniper","section-sniper"],["signals","section-signals"],["calculator","section-calculator"],["settings","section-settings"]];let best="market",bestDist=Infinity;for(const [k,id] of map){const t=document.getElementById(id);if(!t)continue;const d=Math.abs(t.getBoundingClientRect().top-90);if(t.getBoundingClientRect().top<=150&&d<bestDist){best=k;bestDist=d;}}document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===best));}window.addEventListener("scroll",syncMobileNav,{passive:true});window.addEventListener("resize",syncMobileNav);</script></body></html>+fmt(liq):'—';$('ev').textContent=z.qty?(ev>=0?'+
+async function loadAll(){
+  try{
+    $("updated").textContent="K線載入中…";$("tvchart").innerHTML="";tv=null;candle=null;ema20Line=null;ema50Line=null;volumeSeries=null;srLines=[];
+    const b=await get("BTC",interval);
+    if(!b||b.length<20)throw Error("BTC K線資料不足");
+    const rb=renderAsset("btc","BTC",b);current.BTC=rb.d;window.chartData=b;await ensureChartLib();drawTV(b,rb);renderIndicators(b);
+    $("chartLabel").textContent="BTCUSDT · "+interval.toUpperCase();$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");
+    const bt=backtest(b),autoLev=leverageByWinRate(Math.round(bt.wr),Math.round(rb.d.score));$("winInput").value=Math.round(bt.wr);$("levInput").value=autoLev;renderStrategy(rb);
+    $("updated").textContent="K線已更新 · "+new Date().toLocaleTimeString("zh-TW");
+    const [e,b5,e5,b15,e15,b1,e1,b4,e4]=await Promise.allSettled([get("ETH",interval),get("BTC","5m"),get("ETH","5m"),get("BTC","15m"),get("ETH","15m"),get("BTC","1h"),get("ETH","1h"),get("BTC","4h"),get("ETH","4h")]);
+    const val=(r,fb)=>r.status==="fulfilled"?r.value:fb;
+    const eth=val(e,b),eb5=val(b5,b),ee5=val(e5,eb5),eb15=val(b15,b),ee15=val(e15,eb15),eb1=val(b1,b),ee1=val(e1,eb1),eb4=val(b4,b),ee4=val(e4,eb4);
+    const re=renderAsset("eth","ETH",eth);current.ETH=re.d;renderConsensus();renderPlan();
+    renderEngine([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    renderBestTrade([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    try{const alts=await scanAltcoins();renderAltRadar(alts);renderSniperBoard(alts)}catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
+    renderAttackPanel();$("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);const ac=attackConfig();$("risk").value=Math.min(ac.max,2);$("rrInput").value=ac.rr;calc();
+  }catch(err){
+    console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");
+    $("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗：<br>"+(err?.message||"請重新整理頁面")+"</div>";
+  }
+}
+
+let attackMode="attack";localStorage.setItem("cryptoAttackMode","attack");
+let attackState=JSON.parse(localStorage.getItem("cryptoAttackState")||'{"lossStreak":0,"dayPnl":0,"dayKey":""}');
+function attackConfig(){
+  const cfg={safe:{min:.75,max:1,rr:1.8,dd:3},standard:{min:1,max:1.5,rr:2,dd:4},attack:{min:1.5,max:2,rr:2.2,dd:5}}[attackMode]||{min:1,max:1.5,rr:2,dd:4};
+  const key=new Date().toISOString().slice(0,10);if(attackState.dayKey!==key){attackState.dayKey=key;attackState.dayPnl=0;attackState.lossStreak=0;saveAttackState()}
+  return cfg;
+}
+function saveAttackState(){localStorage.setItem("cryptoAttackState",JSON.stringify(attackState))}
+function setAttackMode(mode){attackMode=mode;localStorage.setItem("cryptoAttackMode",mode);document.querySelectorAll(".attackMode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));renderAttackPanel();calc()}
+function dynamicRisk(grade,agreement,volatility){
+  const cfg=attackConfig();let r=cfg.min;
+  if(grade==="A+"&&agreement>=90)r=cfg.max;
+  else if(grade==="A+"&&agreement>=80)r=Math.min(cfg.max,cfg.min+.25);
+  else if(grade==="A"&&agreement>=80)r=cfg.min;
+  else return 0;
+  if(volatility>=2)r=Math.min(r,1);if(volatility>=3)r=Math.min(r,.75);
+  if(attackState.lossStreak>=2)r=Math.min(r,.75);
+  if(attackState.dayPnl<=-cfg.dd)return 0;
+  return r;
+}
+function renderAttackPanel(){
+  const cfg=attackConfig(),r=dynamicRisk("A+",90,1);
+  const badge=attackMode==="attack"?"ATTACK":attackMode==="safe"?"SAFE":"STANDARD";
+  const b=$("attackBadge");if(b)b.textContent=badge;
+  document.querySelectorAll(".attackMode").forEach(x=>x.classList.toggle("active",x.dataset.mode===attackMode));
+  if($("attackRisk"))$("attackRisk").textContent=r.toFixed(2)+"%";if($("attackDailyDD"))$("attackDailyDD").textContent=cfg.dd.toFixed(2)+"%";if($("attackStreak"))$("attackStreak").textContent="3 單";if($("attackRR"))$("attackRR").textContent=cfg.rr.toFixed(1)+"R";
+}
+function recordAttackTrade(win,pnlPct){
+  attackState.dayPnl+=pnlPct;attackState.lossStreak=win?0:attackState.lossStreak+1;saveAttackState();renderAttackPanel();
+}
+function trailingPlan(entry,stop,side,atrValue){
+  const r=Math.abs(entry-stop),trail=Math.max(atrValue*1.1,r*.8);return{trail,breakeven:r*.9,partialR:1.2,runnerR:2.2};
+}
+
+let deferredInstall=null;
+const installBar=$("installBar"),installBtn=$("installBtn");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;installBar.style.display="flex"});
+if(installBtn)installBtn.onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installBar.style.display="none"}else{alert("iPhone：請點 Safari 下方「分享」→「加入主畫面」即可安裝。\nAndroid/Chrome：使用瀏覽器選單中的「安裝 App」或「加到主畫面」。")}};
+window.addEventListener("appinstalled",()=>{installBar.style.display="none";deferredInstall=null});
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);</script><nav class="mobileNav" id="mobileNav"><button type="button" data-target="market" class="active" onclick="mobileNavGo('market');return false"><b>📊</b>行情</button><button type="button" data-target="sniper" onclick="mobileNavGo('sniper');return false"><b>🎯</b>狙擊榜</button><button type="button" data-target="signals" onclick="mobileNavGo('signals');return false"><b>🤖</b>訊號</button><button type="button" data-target="calculator" onclick="mobileNavGo('calculator');return false"><b>🧮</b>計算器</button><button type="button" data-target="settings" onclick="mobileNavGo('settings');return false"><b>⚙️</b>設定</button></nav><script>function mobileNavGo(k){const ids={market:"section-market",sniper:"section-sniper",signals:"section-signals",calculator:"section-calculator",settings:"section-settings"};const t=document.getElementById(ids[k]);if(!t)return;document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===k));const top=Math.max(0,t.getBoundingClientRect().top+window.scrollY-66);window.scrollTo({top,behavior:"smooth"});}function syncMobileNav(){const map=[["market","section-market"],["sniper","section-sniper"],["signals","section-signals"],["calculator","section-calculator"],["settings","section-settings"]];let best="market",bestDist=Infinity;for(const [k,id] of map){const t=document.getElementById(id);if(!t)continue;const d=Math.abs(t.getBoundingClientRect().top-90);if(t.getBoundingClientRect().top<=150&&d<bestDist){best=k;bestDist=d;}}document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===best));}window.addEventListener("scroll",syncMobileNav,{passive:true});window.addEventListener("resize",syncMobileNav);</script></body></html>:'-
+async function loadAll(){
+  try{
+    $("updated").textContent="K線載入中…";$("tvchart").innerHTML="";tv=null;candle=null;ema20Line=null;ema50Line=null;volumeSeries=null;srLines=[];
+    const b=await get("BTC",interval);
+    if(!b||b.length<20)throw Error("BTC K線資料不足");
+    const rb=renderAsset("btc","BTC",b);current.BTC=rb.d;window.chartData=b;await ensureChartLib();drawTV(b,rb);renderIndicators(b);
+    $("chartLabel").textContent="BTCUSDT · "+interval.toUpperCase();$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");
+    const bt=backtest(b),autoLev=leverageByWinRate(Math.round(bt.wr),Math.round(rb.d.score));$("winInput").value=Math.round(bt.wr);$("levInput").value=autoLev;renderStrategy(rb);
+    $("updated").textContent="K線已更新 · "+new Date().toLocaleTimeString("zh-TW");
+    const [e,b5,e5,b15,e15,b1,e1,b4,e4]=await Promise.allSettled([get("ETH",interval),get("BTC","5m"),get("ETH","5m"),get("BTC","15m"),get("ETH","15m"),get("BTC","1h"),get("ETH","1h"),get("BTC","4h"),get("ETH","4h")]);
+    const val=(r,fb)=>r.status==="fulfilled"?r.value:fb;
+    const eth=val(e,b),eb5=val(b5,b),ee5=val(e5,eb5),eb15=val(b15,b),ee15=val(e15,eb15),eb1=val(b1,b),ee1=val(e1,eb1),eb4=val(b4,b),ee4=val(e4,eb4);
+    const re=renderAsset("eth","ETH",eth);current.ETH=re.d;renderConsensus();renderPlan();
+    renderEngine([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    renderBestTrade([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
+    try{const alts=await scanAltcoins();renderAltRadar(alts);renderSniperBoard(alts)}catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
+    renderAttackPanel();$("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);const ac=attackConfig();$("risk").value=Math.min(ac.max,2);$("rrInput").value=ac.rr;calc();
+  }catch(err){
+    console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");
+    $("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗：<br>"+(err?.message||"請重新整理頁面")+"</div>";
+  }
+}
+
+let attackMode="attack";localStorage.setItem("cryptoAttackMode","attack");
+let attackState=JSON.parse(localStorage.getItem("cryptoAttackState")||'{"lossStreak":0,"dayPnl":0,"dayKey":""}');
+function attackConfig(){
+  const cfg={safe:{min:.75,max:1,rr:1.8,dd:3},standard:{min:1,max:1.5,rr:2,dd:4},attack:{min:1.5,max:2,rr:2.2,dd:5}}[attackMode]||{min:1,max:1.5,rr:2,dd:4};
+  const key=new Date().toISOString().slice(0,10);if(attackState.dayKey!==key){attackState.dayKey=key;attackState.dayPnl=0;attackState.lossStreak=0;saveAttackState()}
+  return cfg;
+}
+function saveAttackState(){localStorage.setItem("cryptoAttackState",JSON.stringify(attackState))}
+function setAttackMode(mode){attackMode=mode;localStorage.setItem("cryptoAttackMode",mode);document.querySelectorAll(".attackMode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));renderAttackPanel();calc()}
+function dynamicRisk(grade,agreement,volatility){
+  const cfg=attackConfig();let r=cfg.min;
+  if(grade==="A+"&&agreement>=90)r=cfg.max;
+  else if(grade==="A+"&&agreement>=80)r=Math.min(cfg.max,cfg.min+.25);
+  else if(grade==="A"&&agreement>=80)r=cfg.min;
+  else return 0;
+  if(volatility>=2)r=Math.min(r,1);if(volatility>=3)r=Math.min(r,.75);
+  if(attackState.lossStreak>=2)r=Math.min(r,.75);
+  if(attackState.dayPnl<=-cfg.dd)return 0;
+  return r;
+}
+function renderAttackPanel(){
+  const cfg=attackConfig(),r=dynamicRisk("A+",90,1);
+  const badge=attackMode==="attack"?"ATTACK":attackMode==="safe"?"SAFE":"STANDARD";
+  const b=$("attackBadge");if(b)b.textContent=badge;
+  document.querySelectorAll(".attackMode").forEach(x=>x.classList.toggle("active",x.dataset.mode===attackMode));
+  if($("attackRisk"))$("attackRisk").textContent=r.toFixed(2)+"%";if($("attackDailyDD"))$("attackDailyDD").textContent=cfg.dd.toFixed(2)+"%";if($("attackStreak"))$("attackStreak").textContent="3 單";if($("attackRR"))$("attackRR").textContent=cfg.rr.toFixed(1)+"R";
+}
+function recordAttackTrade(win,pnlPct){
+  attackState.dayPnl+=pnlPct;attackState.lossStreak=win?0:attackState.lossStreak+1;saveAttackState();renderAttackPanel();
+}
+function trailingPlan(entry,stop,side,atrValue){
+  const r=Math.abs(entry-stop),trail=Math.max(atrValue*1.1,r*.8);return{trail,breakeven:r*.9,partialR:1.2,runnerR:2.2};
+}
+
+let deferredInstall=null;
+const installBar=$("installBar"),installBtn=$("installBtn");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;installBar.style.display="flex"});
+if(installBtn)installBtn.onclick=async()=>{if(deferredInstall){deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installBar.style.display="none"}else{alert("iPhone：請點 Safari 下方「分享」→「加入主畫面」即可安裝。\nAndroid/Chrome：使用瀏覽器選單中的「安裝 App」或「加到主畫面」。")}};
+window.addEventListener("appinstalled",()=>{installBar.style.display="none";deferredInstall=null});
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);</script><nav class="mobileNav" id="mobileNav"><button type="button" data-target="market" class="active" onclick="mobileNavGo('market');return false"><b>📊</b>行情</button><button type="button" data-target="sniper" onclick="mobileNavGo('sniper');return false"><b>🎯</b>狙擊榜</button><button type="button" data-target="signals" onclick="mobileNavGo('signals');return false"><b>🤖</b>訊號</button><button type="button" data-target="calculator" onclick="mobileNavGo('calculator');return false"><b>🧮</b>計算器</button><button type="button" data-target="settings" onclick="mobileNavGo('settings');return false"><b>⚙️</b>設定</button></nav><script>function mobileNavGo(k){const ids={market:"section-market",sniper:"section-sniper",signals:"section-signals",calculator:"section-calculator",settings:"section-settings"};const t=document.getElementById(ids[k]);if(!t)return;document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===k));const top=Math.max(0,t.getBoundingClientRect().top+window.scrollY-66);window.scrollTo({top,behavior:"smooth"});}function syncMobileNav(){const map=[["market","section-market"],["sniper","section-sniper"],["signals","section-signals"],["calculator","section-calculator"],["settings","section-settings"]];let best="market",bestDist=Infinity;for(const [k,id] of map){const t=document.getElementById(id);if(!t)continue;const d=Math.abs(t.getBoundingClientRect().top-90);if(t.getBoundingClientRect().top<=150&&d<bestDist){best=k;bestDist=d;}}document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.target===best));}window.addEventListener("scroll",syncMobileNav,{passive:true});window.addEventListener("resize",syncMobileNav);</script></body></html>)+fmt(Math.abs(ev)):'—';
 }
 async function loadAll(){
   try{
