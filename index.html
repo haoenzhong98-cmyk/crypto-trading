@@ -2,81 +2,115 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crypto Strategy Desk — BTC / ETH</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070b12">
+<title>Crypto Strategy Desk PRO — BTC / ETH</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0b0f14;color:#e8edf3;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.wrap{max-width:1200px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
-h1{font-size:22px;margin:0}.muted{color:#8d99a8;font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.card{background:#121821;border:1px solid #202a36;border-radius:14px;padding:18px}.wide{grid-column:1/-1}
-.sym{font-size:14px;color:#9aa6b4}.price{font-size:32px;font-weight:700;margin:5px 0}.up{color:#35d07f}.dn{color:#ff6574}
-.signal{font-size:28px;font-weight:800;margin:8px 0}.wait{color:#f4c95d}.buy{color:#35d07f}.sell{color:#ff6574}
-.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1e2732}.row:last-child{border:0}
-.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.lvl{background:#0d131a;padding:12px;border-radius:10px}.lvl b{display:block;margin-top:5px}
-button{background:#f0b90b;color:#111;border:0;border-radius:9px;padding:9px 14px;font-weight:700;cursor:pointer}
-@media(max-width:700px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}.levels{grid-template-columns:1fr}}
+*{box-sizing:border-box}html,body{margin:0;background:#070b12;color:#edf2f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{padding-bottom:28px}.wrap{max-width:1400px;margin:auto;padding:14px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+h1{font-size:22px;margin:0}.muted{color:#8b98a9;font-size:12px}.live{display:inline-flex;align-items:center;gap:6px;color:#5ee89b;font-size:12px}.dot{width:7px;height:7px;background:#35d07f;border-radius:50%;box-shadow:0 0 10px #35d07f}
+button,.tab{border:1px solid #273342;background:#111923;color:#dce5ef;border-radius:9px;padding:8px 11px;font-weight:700;cursor:pointer}.tab.active{background:#f0b90b;color:#101318;border-color:#f0b90b}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.wide{grid-column:1/-1}.card{background:#0e151e;border:1px solid #202b38;border-radius:14px;padding:14px;box-shadow:0 6px 24px #0003}
+.assetHead{display:flex;justify-content:space-between;align-items:flex-start}.sym{font-size:13px;color:#95a2b1}.price{font-size:29px;font-weight:800;margin:3px 0}.up{color:#38d27d}.dn{color:#ff6675}.flat{color:#f4c95d}
+.signal{font-size:22px;font-weight:900}.badge{display:inline-block;padding:4px 8px;border-radius:7px;font-size:11px;font-weight:800;background:#182330}
+.controls{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat{background:#0a1017;border-radius:9px;padding:9px}.stat b{display:block;margin-top:4px;font-size:13px}
+.chart{height:330px;background:#090e15;border-radius:10px;position:relative;overflow:hidden}.chart canvas{width:100%;height:100%}.legend{display:flex;gap:12px;flex-wrap:wrap;margin:7px 0;font-size:11px;color:#91a0b0}
+.rows{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #1b2530;font-size:13px}.row:last-child{border:0}
+.levels{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.lvl{background:#0a1017;padding:10px;border-radius:9px}.lvl span{display:block;color:#8997a7;font-size:11px}.lvl b{display:block;margin-top:4px;font-size:13px}
+h2{font-size:17px;margin:2px 0 10px}.sectionTitle{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.plan{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.planBox{background:#0a1017;border-radius:10px;padding:12px}.planBox h3{margin:0 0 8px;font-size:14px}.check{padding:7px 0;border-bottom:1px solid #1b2530;font-size:13px}.check:last-child{border:0}
+.score{font-size:38px;font-weight:900}.bar{height:9px;background:#1a2430;border-radius:10px;overflow:hidden}.bar i{display:block;height:100%;background:#35d07f;border-radius:10px}
+.form{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.input{background:#090e15;border:1px solid #25313e;border-radius:8px;padding:9px;color:#fff;width:100%}.calc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.calcBox{background:#0a1017;border-radius:9px;padding:10px}.calcBox b{font-size:16px}
+.footer{margin-top:12px;color:#718092;font-size:11px;line-height:1.6}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}.plan{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.levels{grid-template-columns:repeat(2,1fr)}.form{grid-template-columns:repeat(2,1fr)}.chart{height:280px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<div class="top">
-  <div><h1>Crypto Strategy Desk</h1><div class="muted">BTC / ETH 交易監控與每日策略</div></div>
-  <button onclick="loadAll()">更新行情</button>
+<header class="top">
+<div><h1>Crypto Strategy Desk <span class="badge">PRO</span></h1><div class="muted">BTC / ETH 多週期交易儀表板 · <span id="updated">載入中…</span></div></div>
+<div><span class="live"><i class="dot"></i>LIVE</span> <button onclick="loadAll()">↻ 更新</button></div>
+</header>
+
+<div class="controls">
+<button class="tab active" data-i="1m">1m</button><button class="tab" data-i="5m">5m</button><button class="tab" data-i="15m">15m</button><button class="tab" data-i="1h">1H</button><button class="tab" data-i="4h">4H</button>
 </div>
+
 <div class="grid">
-  <section class="card" id="btc"></section>
-  <section class="card" id="eth"></section>
-  <section class="card wide">
-    <div class="sym">策略引擎</div>
-    <h2 style="margin:6px 0 4px">今日交易規則</h2>
-    <div class="row"><span>趨勢確認</span><b>1H / 4H 結構優先</b></div>
-    <div class="row"><span>進場</span><b>支撐反彈或壓力突破確認後</b></div>
-    <div class="row"><span>風險</span><b>單筆最多 1% 本金</b></div>
-    <div class="row"><span>最低風報比</span><b>約 1 : 2</b></div>
-    <div class="row"><span>無優勢時</span><b>等待，不硬做</b></div>
-  </section>
-  <section class="card wide">
-    <div class="sym">風險聲明</div>
-    <p class="muted">本頁是交易決策輔助，不保證獲利。價格資料來自公開市場 API；策略中的支撐、壓力與訊號是規則化推論，不是保證性預測。實際下單前請確認交易所價格、滑價與手續費。</p>
-  </section>
+<section class="card" id="btc"></section>
+<section class="card" id="eth"></section>
+
+<section class="card wide">
+<div class="sectionTitle"><h2>📊 多週期 K 線與技術指標</h2><span class="muted" id="chartLabel">1H</span></div>
+<div class="chart"><canvas id="chart"></canvas></div>
+<div class="legend"><span>━ 收盤</span><span>— EMA20</span><span>— EMA50</span><span>RSI / MACD 顯示於下方</span></div>
+<div class="stats" id="indicators"></div>
+</section>
+
+<section class="card">
+<div class="sectionTitle"><h2>🎯 策略訊號</h2><span class="badge" id="signalTime">—</span></div>
+<div id="strategy"></div>
+</section>
+
+<section class="card">
+<div class="sectionTitle"><h2>🧠 策略共識</h2><span class="muted">規則化模型</span></div>
+<div id="consensus"></div>
+</section>
+
+<section class="card wide">
+<div class="sectionTitle"><h2>📅 今日交易計畫</h2><span class="badge">自動更新</span></div>
+<div class="plan" id="dailyPlan"></div>
+</section>
+
+<section class="card wide">
+<div class="sectionTitle"><h2>💰 風險 / 倉位計算器</h2><span class="muted">單筆風險預設 1%</span></div>
+<div class="form">
+<div><div class="muted">本金 USDT</div><input class="input" id="capital" type="number" value="1000"></div>
+<div><div class="muted">進場價</div><input class="input" id="entry" type="number" value=""></div>
+<div><div class="muted">止損價</div><input class="input" id="stop" type="number" value=""></div>
+<div><div class="muted">風險 %</div><input class="input" id="risk" type="number" value="1" step=".1"></div>
+</div>
+<div class="calc"><div class="calcBox">最大可承受虧損 <b id="loss">—</b></div><div class="calcBox">建議數量 <b id="qty">—</b></div><div class="calcBox">倉位名目價值 <b id="notional">—</b></div><div class="calcBox">風險距離 <b id="dist">—</b></div></div>
+</section>
+
+<section class="card wide">
+<h2>⚠️ 使用規則</h2>
+<div class="rows">
+<div class="row"><span>趨勢</span><b>4H → 1H 優先，短週期只找進場點</b></div>
+<div class="row"><span>進場</span><b>突破確認 / 支撐反彈，避免追價</b></div>
+<div class="row"><span>風險</span><b>單筆 ≤ 1%，最低目標 R:R ≥ 1:2</b></div>
+<div class="row"><span>無訊號</span><b>WAIT，不強迫交易</b></div>
+</div>
+<div class="footer">資料來自 Binance 公開行情 API。本站的「共識」是技術規則模型，不代表真實 100 名交易員的私人持倉或勝率；也不保證獲利。實際下單請自行確認價格、滑價、資金費率與手續費。</div>
+</section>
 </div>
 </div>
+
 <script>
-const api="https://api.binance.com/api/v3/klines";
-async function get(sym){
-  const r=await fetch(api+"?symbol="+sym+"USDT&interval=1h&limit=100");
-  if(!r.ok) throw new Error("API error");
-  const a=await r.json();
-  const c=a.map(x=>+x[4]), h=a.map(x=>+x[2]), l=a.map(x=>+x[3]);
-  const ma=n=>c.slice(-n).reduce((x,y)=>x+y,0)/n;
-  const p=c.at(-1), m20=ma(20), m50=ma(50);
-  const hi=Math.max(...h.slice(-24)), lo=Math.min(...l.slice(-24));
-  let sig="等待", cls="wait", note="等待支撐/壓力確認";
-  if(p>m20 && m20>m50){sig="偏多";cls="buy";note="多頭結構，但不追高";}
-  if(p<m20 && m20<m50){sig="偏空";cls="sell";note="空頭結構，避免接刀";}
-  return {p,m20,m50,hi,lo,sig,cls,note};
-}
-function money(x){return x.toLocaleString("en-US",{maximumFractionDigits:2})}
-function draw(id,s,d){
-  const rng=d.hi-d.lo, buy=d.lo+rng*.15, sl=d.lo-rng*.08, tp1=d.hi-rng*.1, tp2=d.hi+rng*.1;
-  document.getElementById(id).innerHTML=
-    '<div class="sym">'+s+'/USDT</div>'+
-    '<div class="price">$'+money(d.p)+'</div>'+
-    '<div class="signal '+d.cls+'">'+d.sig+'</div>'+
-    '<div class="muted">'+d.note+'</div>'+
-    '<div class="row"><span>1H MA20</span><b>$'+money(d.m20)+'</b></div>'+
-    '<div class="row"><span>1H MA50</span><b>$'+money(d.m50)+'</b></div>'+
-    '<div class="row"><span>24H 高 / 低</span><b>$'+money(d.hi)+' / $'+money(d.lo)+'</b></div>'+
-    '<div class="levels" style="margin-top:12px">'+
-      '<div class="lvl"><span class="muted">觀察進場</span><b>$'+money(buy)+'</b></div>'+
-      '<div class="lvl"><span class="muted">防守/止損參考</span><b>$'+money(sl)+'</b></div>'+
-      '<div class="lvl"><span class="muted">TP1 / TP2</span><b>$'+money(tp1)+' / $'+money(tp2)+'</b></div>'+
-    '</div>';
-}
-async function loadAll(){
-  try{draw("btc","BTC",await get("BTC"));draw("eth","ETH",await get("ETH"))}
-  catch(e){document.querySelectorAll(".card").forEach((x,i)=>{if(i<2)x.innerHTML="<b>行情載入失敗</b><p class='muted'>請稍後重試，或確認網路可連線至公開行情 API。</p>"})}
-}
+const API="https://api.binance.com/api/v3/klines";
+let interval="1h", current={BTC:null,ETH:null};
+const $=id=>document.getElementById(id);
+const fmt=x=>Number(x).toLocaleString("en-US",{maximumFractionDigits:x>100?2:4});
+function sma(a,n){return a.length<n?null:a.slice(-n).reduce((x,y)=>x+y,0)/n}
+function emaSeries(a,n){let out=[],k=2/(n+1),e=a[0];out.push(e);for(let i=1;i<a.length;i++){e=a[i]*k+e*(1-k);out.push(e)}return out}
+function rsi(a,n=14){if(a.length<=n)return 50;let g=0,l=0;for(let i=a.length-n;i<a.length;i++){let d=a[i]-a[i-1];if(d>0)g+=d;else l-=d}if(l===0)return 100;return 100-(100/(1+g/l))}
+function macd(a){let e12=emaSeries(a,12),e26=emaSeries(a,26),m=a.map((_,i)=>e12[i]-e26[i]),sig=emaSeries(m,9);return {m:m.at(-1),s:sig.at(-1),h:m.at(-1)-sig.at(-1)}}
+async function get(sym,intv){let r=await fetch(API+"?symbol="+sym+"USDT&interval="+intv+"&limit=180");if(!r.ok)throw Error("API");let a=await r.json();return a.map(x=>({t:x[0],o:+x[1],h:+x[2],l:+x[3],c:+x[4],v:+x[5]}))}
+function analyze(a){let c=a.map(x=>x.c), e20=emaSeries(c,20),e50=emaSeries(c,50),r=rsi(c),m=macd(c),last=c.at(-1),hi=Math.max(...a.slice(-24).map(x=>x.h)),lo=Math.min(...a.slice(-24).map(x=>x.l));let trend=last>e20.at(-1)&&e20.at(-1)>e50.at(-1)?"多":last<e20.at(-1)&&e20.at(-1)<e50.at(-1)?"空":"震盪";let score=50;if(trend==="多")score+=20;if(trend==="空")score-=20;if(r>55)score+=15;if(r<45)score-=15;if(m.h>0)score+=10;else score-=10;return {c,e20,e50,r,m,last,hi,lo,trend,score}}
+function drawAsset(id,s,a){let d=analyze(a),chg=(d.last-a.at(-2).c)/a.at(-2).c*100, cls=chg>=0?"up":"dn";current[s]=d;$ (id)}
+function renderAsset(id,s,a){let d=analyze(a),chg=(d.last-a.at(-2).c)/a.at(-2).c*100, sig=d.score>=70?"BUY":d.score<=30?"SELL":"WAIT", cls=sig==="BUY"?"up":sig==="SELL"?"dn":"flat";let rng=d.hi-d.lo, entry=d.trend==="多"?d.last: d.lo+rng*.35, stop=d.trend==="空"?d.hi+rng*.06:d.lo-rng*.06,tp1=entry+(entry-stop)*2,tp2=entry+(entry-stop)*3;
+$(id).innerHTML="<div class='assetHead'><div><div class='sym'>"+s+"/USDT · "+interval.toUpperCase()+"</div><div class='price'>$"+fmt(d.last)+"</div><div class='"+(chg>=0?"up":"dn")+"'>"+(chg>=0?"+":"")+chg.toFixed(2)+"%</div></div><div style='text-align:right'><div class='signal "+cls+"'>"+sig+"</div><div class='muted'>信號分數 "+Math.round(d.score)+"/100</div></div></div><div class='rows' style='margin-top:10px'><div class='row'><span>EMA20</span><b>$"+fmt(d.e20.at(-1))+"</b></div><div class='row'><span>EMA50</span><b>$"+fmt(d.e50.at(-1))+"</b></div><div class='row'><span>RSI14</span><b>"+d.r.toFixed(1)+"</b></div><div class='row'><span>MACD柱</span><b>"+d.m.h.toFixed(3)+"</b></div><div class='row'><span>24H高</span><b>$"+fmt(d.hi)+"</b></div><div class='row'><span>24H低</span><b>$"+fmt(d.lo)+"</b></div></div><div class='levels'><div class='lvl'><span>進場參考</span><b>$"+fmt(entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(stop)+"</b></div><div class='lvl'><span>TP1</span><b>$"+fmt(tp1)+"</b></div><div class='lvl'><span>TP2</span><b>$"+fmt(tp2)+"</b></div></div>";
+return {d,sig,entry,stop,tp1,tp2}}
+function drawChart(a){let cv=$("chart"),box=cv.getBoundingClientRect(),dpr=devicePixelRatio||1;cv.width=box.width*dpr;cv.height=box.height*dpr;let ctx=cv.getContext("2d");ctx.scale(dpr,dpr);let w=box.width,h=box.height,p=24,c=a.map(x=>x.c),e20=emaSeries(c,20),e50=emaSeries(c,50),min=Math.min(...c.slice(-100)),max=Math.max(...c.slice(-100));const X=i=>p+(i/(Math.min(100,c.length)-1))*(w-p*1.5),Y=v=>h-p-((v-min)/(max-min||1))*(h-p*1.5);ctx.clearRect(0,0,w,h);ctx.strokeStyle="#18222e";ctx.lineWidth=1;for(let j=0;j<5;j++){let y=p+j*(h-p*2)/4;ctx.beginPath();ctx.moveTo(p,y);ctx.lineTo(w-p,y);ctx.stroke()}function line(arr,stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.beginPath();let st=Math.max(0,arr.length-100);arr.slice(-100).forEach((v,i)=>{let x=X(i),y=Y(v);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()}line(c,"#d9e2ec");line(e20,"#f0b90b");line(e50,"#7c8cff")}
+function renderIndicators(a){let d=analyze(a);$("indicators").innerHTML="<div class='stat'><span class='muted'>RSI 14</span><b>"+d.r.toFixed(1)+" · "+(d.r>70?"超買":d.r<30?"超賣":"中性")+"</b></div><div class='stat'><span class='muted'>MACD</span><b>"+d.m.m.toFixed(3)+" / "+d.m.s.toFixed(3)+"</b></div><div class='stat'><span class='muted'>EMA 結構</span><b>"+(d.trend==="多"?"多頭":d.trend==="空"?"空頭":"震盪")+"</b></div><div class='stat'><span class='muted'>動能</span><b>"+(d.m.h>0?"上升":"下降")+"</b></div>"}
+function renderStrategy(a,b){let d=a.d, bias=d.trend==="多"?"偏多":d.trend==="空"?"偏空":"中性";$("strategy").innerHTML="<div class='score'>"+a.sig+"</div><p class='muted'>"+bias+" · 技術綜合分數 "+Math.round(d.score)+"/100</p><div class='bar'><i style='width:"+Math.max(5,Math.min(100,d.score))+"%'></i></div><div class='row'><span>主要條件</span><b>"+(d.trend==="多"?"EMA20 > EMA50":d.trend==="空"?"EMA20 < EMA50":"EMA糾結")+"</b></div><div class='row'><span>RSI</span><b>"+d.r.toFixed(1)+"</b></div><div class='row'><span>MACD</span><b>"+(d.m.h>0?"多方":"空方")+"</b></div><div class='row'><span>執行</span><b>"+(a.sig==="BUY"?"等待回踩/確認再多":a.sig==="SELL"?"等待反彈/確認再空":"等待，不硬做")+"</b></div>"}
+function renderConsensus(){let a=current.BTC,b=current.ETH;if(!a||!b)return;let vals=[a.score,b.score],avg=vals.reduce((x,y)=>x+y,0)/2,lab=avg>=70?"偏多":avg<=30?"偏空":"觀望";$("consensus").innerHTML="<div class='score'>"+Math.round(avg)+"<span style='font-size:16px'> / 100</span></div><p><span class='badge'>"+lab+"</span> BTC "+Math.round(a.score)+" · ETH "+Math.round(b.score)+"</p><div class='row'><span>趨勢共識</span><b>"+(a.trend===b.trend?a.trend+"頭一致":"分歧")+"</b></div><div class='row'><span>策略強度</span><b>"+(avg>=70||avg<=30?"可執行":"降低倉位 / 等待")+"</b></div><div class='muted' style='margin-top:9px'>此處不是交易所真實交易員持倉資料，而是由 EMA、RSI、MACD、動能等規則計算的策略共識。</div>"}
+function renderPlan(){let a=current.BTC,b=current.ETH;if(!a||!b)return;let pick=a.score>=b.score?"BTC":"ETH",d=pick==="BTC"?a:b, strong=d.score>=70||d.score<=30;$("dailyPlan").innerHTML="<div class='planBox'><h3>今日主策略：<span class='"+(d.score>=70?"up":d.score<=30?"dn":"flat")+"'>"+pick+" · "+(d.trend==="多"?"順勢偏多":d.trend==="空"?"順勢偏空":"區間等待")+"</span></h3><div class='check'>① 先看 4H / 1H 趨勢，不逆勢重倉</div><div class='check'>② 等價格靠近支撐/壓力或突破後回踩</div><div class='check'>③ 進場後止損固定，單筆最多風險 1%</div><div class='check'>④ TP1 至少 2R，達標後可分批落袋</div></div><div class='planBox'><h3>執行結論</h3><div class='check'>BTC：<b>"+Math.round(a.score)+"/100</b></div><div class='check'>ETH：<b>"+Math.round(b.score)+"/100</b></div><div class='check'>目前：<b>"+(strong?"有條件可交易":"WAIT，等待更好位置")+"</b></div><div class='check'>更新：<b>"+new Date().toLocaleTimeString("zh-TW")+"</b></div></div>"}
+function calc(){let cap=+$("capital").value||0,e=+$("entry").value||0,s=+$("stop").value||0,r=+$("risk").value||0,loss=cap*r/100,dist=Math.abs(e-s),q=dist?loss/dist:0;$("loss").textContent="$"+fmt(loss);$("qty").textContent=q?q.toFixed(6):"—";$("notional").textContent=q?"$"+fmt(q*e):"—";$("dist").textContent=e&&s?(dist/e*100).toFixed(2)+"%":"—"}
+async function loadAll(){try{$("updated").textContent="更新中…";let [b,e]=await Promise.all([get("BTC",interval),get("ETH",interval)]);let rb=renderAsset("btc","BTC",b),re=renderAsset("eth","ETH",e);drawChart(b);renderIndicators(b);renderStrategy(rb,re);renderConsensus();renderPlan();$("signalTime").textContent=new Date().toLocaleTimeString("zh-TW");$("chartLabel").textContent=interval.toUpperCase();$("updated").textContent="最後更新 "+new Date().toLocaleTimeString("zh-TW");$("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);calc()}catch(err){$("updated").textContent="行情 API 暫時無法連線"}}
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});
+["capital","entry","stop","risk"].forEach(id=>$(id).addEventListener("input",calc));
+window.addEventListener("resize",()=>current.BTC&&drawChart(current.BTC.c.map((c,i)=>({c}))));
 loadAll();setInterval(loadAll,60000);
 </script>
 </body>
