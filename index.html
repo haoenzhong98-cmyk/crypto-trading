@@ -217,10 +217,12 @@ function renderSniperBoard(rows){
 function renderBestTrade(results){
   const visible=results.filter(x=>x.grade==="A+"||x.grade==="A");
   if(!visible.length){$("bestTrade").innerHTML="<div class='planBox'><div class='score'>WAIT</div><p>目前沒有 A 以上策略。</p><div class='muted'>系統只顯示 A / A+ 品質等級，其他等級不列入最佳交易。</div></div>";$("bestStatus").textContent="無 A 以上策略";return}
-  const eligible=visible.filter(x=>x.allowed);
-  const ranked=(eligible.length?eligible:visible).slice().sort((a,b)=>{
-    const sa=(a.allowed?30:0)+a.agreement*.35+a.wr*.2+(a.direction==="震盪"?0:20)-(a.volatility*5);
-    const sb=(b.allowed?30:0)+b.agreement*.35+b.wr*.2+(b.direction==="震盪"?0:20)-(b.volatility*5);
+  // 一鍵交易卡直接從目前所有 A / A+ 方案選出最佳者，包含 BTC、ETH 與山寨幣雷達候選。
+  // A+ 優先於 A；同等級再依允許交易、一致度、回測勝率與波動排序。
+  const ranked=visible.slice().sort((a,b)=>{
+    const ga=a.grade==="A+"?2:1,gb=b.grade==="A+"?2:1;
+    const sa=ga*100+(a.allowed?30:0)+a.agreement*.35+a.wr*.2+(a.direction==="震盪"?0:20)-(a.volatility*5);
+    const sb=gb*100+(b.allowed?30:0)+b.agreement*.35+b.wr*.2+(b.direction==="震盪"?0:20)-(b.volatility*5);
     return sb-sa;
   });
   const x=ranked[0], isTrade=!!x.allowed;
@@ -245,8 +247,8 @@ function renderBestTrade(results){
   const ev=(x.wr/100)*p2-(1-x.wr/100)*sl;
   const rr=Math.abs(x.tp2-x.entry)/Math.max(riskPerUnit,.00000001);
   const margin=entryMargin;
-  const reason=isTrade?"A+ 嚴格模式通過：勝率、週期一致度、趨勢與波動條件全部達標":x.grade==="A"?"A 級策略：符合高品質門檻，建議人工確認後進場":"目前沒有 A 以上訊號";
-  $("bestTrade").innerHTML="<div class='plan'><div class='planBox' style='border:1px solid #273342'><div class='muted'>最佳目標</div><div class='score'>"+x.name+" · "+side+"</div><p>"+reason+"</p><div class='levels'><div class='lvl'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(x.stop)+"</b></div><div class='lvl'><span>槓桿</span><b>"+x.lev+"x</b></div><div class='lvl'><span>回測勝率</span><b>"+Math.round(x.wr)+"%</b></div><div class='lvl'><span>一致度</span><b>"+x.agreement+"%</b></div></div><div class='rows' style='margin-top:10px'><div class='row'><span>TP1 · 1.5R</span><b>$"+fmt(x.tp1)+"</b></div><div class='row'><span>TP2 · 2R</span><b>$"+fmt(x.tp2)+"</b></div><div class='row'><span>TP3 · 3R</span><b>$"+fmt(x.tp3)+"</b></div><div class='row'><span>ATR 波動</span><b>"+x.volatility.toFixed(2)+"%</b></div></div></div><div class='planBox'><h3>💰 本金 $"+fmt(cap)+" · 自動倉位</h3><div class='row'><span>建議進場資產</span><b>"+entryPct+"% · $"+fmt(entryMargin)+"</b></div><div class='row'><span>最大風險（進場資產15%）</span><b>$"+fmt(riskMoney)+"</b></div><div class='row'><span>建議數量</span><b>"+(qty?qty.toFixed(6):"—")+"</b></div><div class='row'><span>名目倉位</span><b>$"+fmt(notional)+"</b></div><div class='row'><span>所需保證金</span><b>$"+fmt(margin)+"</b></div><div class='row'><span>止損預估虧損（上限15%）</span><b>-$"+fmt(sl)+"</b></div><div class='row'><span>TP1 / TP2 / TP3</span><b>+$"+fmt(p1)+" / +$"+fmt(p2)+" / +$"+fmt(p3)+"</b></div><div class='row'><span>TP2 R:R</span><b>1:"+rr.toFixed(2)+"</b></div><div class='row'><span>單筆期望值</span><b>"+(ev>=0?"+$":"-$")+fmt(Math.abs(ev))+"</b></div></div></div><div class='muted' style='margin-top:10px'>⚠️ 這張卡是規則模型的自動化結果，不是保證獲利；槓桿越高，清算與滑價風險越大。WAIT 時應等待條件改善。</div>";
+  const reason=x.grade==="A+"?"A+ 嚴格模式通過：勝率、週期一致度、趨勢與波動條件全部達標":"A 級策略：符合高品質門檻，建議人工確認後進場";
+  $("bestTrade").innerHTML="<div class='plan'><div class='planBox' style='border:1px solid #273342'><div class='muted'>最佳 A 以上方案</div><div class='score'>"+x.name+" · "+side+" · "+x.grade+"</div><p>"+reason+"</p><div class='levels'><div class='lvl'><span>進場</span><b>$"+fmt(x.entry)+"</b></div><div class='lvl'><span>止損</span><b>$"+fmt(x.stop)+"</b></div><div class='lvl'><span>槓桿</span><b>"+x.lev+"x</b></div><div class='lvl'><span>回測勝率</span><b>"+Math.round(x.wr)+"%</b></div><div class='lvl'><span>一致度</span><b>"+x.agreement+"%</b></div></div><div class='rows' style='margin-top:10px'><div class='row'><span>TP1 · 1.5R</span><b>$"+fmt(x.tp1)+"</b></div><div class='row'><span>TP2 · 2R</span><b>$"+fmt(x.tp2)+"</b></div><div class='row'><span>TP3 · 3R</span><b>$"+fmt(x.tp3)+"</b></div><div class='row'><span>ATR 波動</span><b>"+x.volatility.toFixed(2)+"%</b></div></div></div><div class='planBox'><h3>💰 本金 $"+fmt(cap)+" · 自動倉位</h3><div class='row'><span>建議進場資產</span><b>"+entryPct+"% · $"+fmt(entryMargin)+"</b></div><div class='row'><span>最大風險（進場資產15%）</span><b>$"+fmt(riskMoney)+"</b></div><div class='row'><span>建議數量</span><b>"+(qty?qty.toFixed(6):"—")+"</b></div><div class='row'><span>名目倉位</span><b>$"+fmt(notional)+"</b></div><div class='row'><span>所需保證金</span><b>$"+fmt(margin)+"</b></div><div class='row'><span>止損預估虧損（上限15%）</span><b>-$"+fmt(sl)+"</b></div><div class='row'><span>TP1 / TP2 / TP3</span><b>+$"+fmt(p1)+" / +$"+fmt(p2)+" / +$"+fmt(p3)+"</b></div><div class='row'><span>TP2 R:R</span><b>1:"+rr.toFixed(2)+"</b></div><div class='row'><span>單筆期望值</span><b>"+(ev>=0?"+$":"-$")+fmt(Math.abs(ev))+"</b></div></div></div><div class='muted' style='margin-top:10px'>⚠️ 這張卡是規則模型的自動化結果，不是保證獲利；槓桿越高，清算與滑價風險越大。WAIT 時應等待條件改善。</div>";
   $("bestStatus").textContent=isTrade?"最佳標的："+x.name+" · "+side:x.grade+" 候選："+x.name+" · "+side;
 }
 
