@@ -179,6 +179,13 @@ async function scanAltcoins(){
   await Promise.all(Array.from({length:5},()=>worker()));
   return rows.sort((a,b)=>b.sniper-a.sniper);
 }
+function altToStrategy(x){
+  const riskDist=Math.abs(x.entry-x.stop);
+  const riskPct=dynamicRisk(x.grade,x.agreement,x.volatility);
+  const allowed=riskPct>0&&x.grade==="A+"&&x.dir!=="觀察"&&x.agreement>=80;
+  const trailDist=riskDist*.5;
+  return {name:x.symbol,direction:x.dir,ds:x.ds,volatility:x.volatility,wr:x.bt.wr,bt:x.bt,lev:x.lev,agreement:Math.round(x.agreement),grade:x.grade,allowed,riskPct,entry:x.entry,stop:x.stop,tp1:x.tp1,tp2:x.tp2,tp3:x.tp3,riskDist,trail:{trail:trailDist,breakeven:x.dir==="多"?x.entry+riskDist:x.entry-riskDist}};
+}
 function renderAltRadar(rows){
   if(!rows.length){$("altRadar").innerHTML="<div class='muted'>目前沒有符合流動性與品質門檻的山寨幣。</div>";$("altStatus").textContent="無合格標的";return}
   const html=rows.slice(0,6).map(x=>{
@@ -362,7 +369,23 @@ async function loadAll(){
     const re=renderAsset("eth","ETH",eth);current.ETH=re.d;renderConsensus();renderPlan();
     renderEngine([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
     renderBestTrade([multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4})]);
-    try{const alts=await scanAltcoins();renderAltRadar(alts);renderSniperBoard(alts)}catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
+    try{
+      const nowAlt=Date.now();
+      if(!window.altRadarCache||nowAlt-(window.altRadarLastScan||0)>=300000){
+        window.altRadarCache=await scanAltcoins();
+        window.altRadarLastScan=nowAlt;
+      }
+      const alts=window.altRadarCache||[];
+      renderAltRadar(alts);renderSniperBoard(alts);
+      const altEngines=alts.slice(0,6).filter(x=>x.dir!=="觀察"&&x.bt.tests>=5).map(altToStrategy);
+      const strategyRows=[
+        multiTimeframeEngine("BTC",{"5m":eb5,"15m":eb15,"1h":eb1,"4h":eb4}),
+        multiTimeframeEngine("ETH",{"5m":ee5,"15m":ee15,"1h":ee1,"4h":ee4}),
+        ...altEngines
+      ];
+      renderEngine(strategyRows);
+      renderBestTrade(strategyRows);
+    }catch(e){$("altStatus").textContent="掃描失敗";$("sniperStatus").textContent="等待下次掃描"}
     $("entry").value=rb.entry.toFixed(2);$("stop").value=rb.stop.toFixed(2);$("risk").value=15;$("rrInput").value=2.2;calc();
   }catch(err){
     console.error(err);$("updated").textContent="載入失敗："+(err?.message||"未知錯誤");
