@@ -336,3 +336,4 @@ async function loadAll(){
   }
 }
 >
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);
