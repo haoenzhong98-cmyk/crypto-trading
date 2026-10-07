@@ -335,5 +335,4 @@ async function loadAll(){
     $("tvchart").innerHTML="<div style=\"height:100%;display:flex;align-items:center;justify-content:center;color:#8b98a9;font-size:13px;padding:20px;text-align:center\">K線載入失敗：<br>"+(err?.message||"請重新整理頁面")+"</div>";
   }
 }
->
-document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);
+document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>{document.querySelectorAll(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");interval=x.dataset.i;loadAll()});["capital","entry","stop","risk","levInput","rrInput","feeInput"].forEach(id=>$(id).addEventListener("input",calc));loadAll();setInterval(loadAll,60000);</script></body></html>
