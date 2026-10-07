@@ -1,0 +1,46 @@
+{
+  "name": "Crypto Strategy Desk PRO",
+  "short_name": "Crypto Desk",
+  "description": "BTC / ETH 多週期加密貨幣交易策略儀表板",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#070b12",
+  "theme_color": "#070b12",
+  "lang": "zh-TW",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "BTC 交易儀表板",
+      "short_name": "BTC",
+      "url": "./?asset=BTC",
+      "icons": [
+        {
+          "src": "./icons/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "交易計算器",
+      "short_name": "計算器",
+      "url": "./?tool=calculator",
+      "icons": [
+        {
+          "src": "./icons/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}
