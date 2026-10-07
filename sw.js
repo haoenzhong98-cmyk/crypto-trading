@@ -1,4 +1,4 @@
-const CACHE="crypto-desk-v2";
+const CACHE="crypto-desk-v3";
 const SHELL=["./","./index.html","./manifest.json","./icons/icon.svg"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
@@ -12,8 +12,10 @@ self.addEventListener("fetch",event=>{
   const url=new URL(req.url);
   if(url.origin!==location.origin)return;
   if(req.mode==="navigate"){
-    event.respondWith(fetch(req).then(res=>{
-      const copy=res.clone(); caches.open(CACHE).then(c=>c.put("./index.html",copy)); return res;
+    event.respondWith(fetch(req,{cache:"no-store"}).then(res=>{
+      const copy=res.clone();
+      caches.open(CACHE).then(c=>c.put("./index.html",copy)).catch(()=>{});
+      return res;
     }).catch(()=>caches.match("./index.html")));
     return;
   }
