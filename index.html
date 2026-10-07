@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crypto Strategy Desk — BTC / ETH</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b0f14;color:#e8edf3;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:1200px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
+h1{font-size:22px;margin:0}.muted{color:#8d99a8;font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{background:#121821;border:1px solid #202a36;border-radius:14px;padding:18px}.wide{grid-column:1/-1}
+.sym{font-size:14px;color:#9aa6b4}.price{font-size:32px;font-weight:700;margin:5px 0}.up{color:#35d07f}.dn{color:#ff6574}
+.signal{font-size:28px;font-weight:800;margin:8px 0}.wait{color:#f4c95d}.buy{color:#35d07f}.sell{color:#ff6574}
+.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1e2732}.row:last-child{border:0}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.lvl{background:#0d131a;padding:12px;border-radius:10px}.lvl b{display:block;margin-top:5px}
+button{background:#f0b90b;color:#111;border:0;border-radius:9px;padding:9px 14px;font-weight:700;cursor:pointer}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}.levels{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top">
+  <div><h1>Crypto Strategy Desk</h1><div class="muted">BTC / ETH 交易監控與每日策略</div></div>
+  <button onclick="loadAll()">更新行情</button>
+</div>
+<div class="grid">
+  <section class="card" id="btc"></section>
+  <section class="card" id="eth"></section>
+  <section class="card wide">
+    <div class="sym">策略引擎</div>
+    <h2 style="margin:6px 0 4px">今日交易規則</h2>
+    <div class="row"><span>趨勢確認</span><b>1H / 4H 結構優先</b></div>
+    <div class="row"><span>進場</span><b>支撐反彈或壓力突破確認後</b></div>
+    <div class="row"><span>風險</span><b>單筆最多 1% 本金</b></div>
+    <div class="row"><span>最低風報比</span><b>約 1 : 2</b></div>
+    <div class="row"><span>無優勢時</span><b>等待，不硬做</b></div>
+  </section>
+  <section class="card wide">
+    <div class="sym">風險聲明</div>
+    <p class="muted">本頁是交易決策輔助，不保證獲利。價格資料來自公開市場 API；策略中的支撐、壓力與訊號是規則化推論，不是保證性預測。實際下單前請確認交易所價格、滑價與手續費。</p>
+  </section>
+</div>
+</div>
+<script>
+const api="https://api.binance.com/api/v3/klines";
+async function get(sym){
+  const r=await fetch(api+"?symbol="+sym+"USDT&interval=1h&limit=100");
+  if(!r.ok) throw new Error("API error");
+  const a=await r.json();
+  const c=a.map(x=>+x[4]), h=a.map(x=>+x[2]), l=a.map(x=>+x[3]);
+  const ma=n=>c.slice(-n).reduce((x,y)=>x+y,0)/n;
+  const p=c.at(-1), m20=ma(20), m50=ma(50);
+  const hi=Math.max(...h.slice(-24)), lo=Math.min(...l.slice(-24));
+  let sig="等待", cls="wait", note="等待支撐/壓力確認";
+  if(p>m20 && m20>m50){sig="偏多";cls="buy";note="多頭結構，但不追高";}
+  if(p<m20 && m20<m50){sig="偏空";cls="sell";note="空頭結構，避免接刀";}
+  return {p,m20,m50,hi,lo,sig,cls,note};
+}
+function money(x){return x.toLocaleString("en-US",{maximumFractionDigits:2})}
+function draw(id,s,d){
+  const rng=d.hi-d.lo, buy=d.lo+rng*.15, sl=d.lo-rng*.08, tp1=d.hi-rng*.1, tp2=d.hi+rng*.1;
+  document.getElementById(id).innerHTML=
+    '<div class="sym">'+s+'/USDT</div>'+
+    '<div class="price">$'+money(d.p)+'</div>'+
+    '<div class="signal '+d.cls+'">'+d.sig+'</div>'+
+    '<div class="muted">'+d.note+'</div>'+
+    '<div class="row"><span>1H MA20</span><b>$'+money(d.m20)+'</b></div>'+
+    '<div class="row"><span>1H MA50</span><b>$'+money(d.m50)+'</b></div>'+
+    '<div class="row"><span>24H 高 / 低</span><b>$'+money(d.hi)+' / $'+money(d.lo)+'</b></div>'+
+    '<div class="levels" style="margin-top:12px">'+
+      '<div class="lvl"><span class="muted">觀察進場</span><b>$'+money(buy)+'</b></div>'+
+      '<div class="lvl"><span class="muted">防守/止損參考</span><b>$'+money(sl)+'</b></div>'+
+      '<div class="lvl"><span class="muted">TP1 / TP2</span><b>$'+money(tp1)+' / $'+money(tp2)+'</b></div>'+
+    '</div>';
+}
+async function loadAll(){
+  try{draw("btc","BTC",await get("BTC"));draw("eth","ETH",await get("ETH"))}
+  catch(e){document.querySelectorAll(".card").forEach((x,i)=>{if(i<2)x.innerHTML="<b>行情載入失敗</b><p class='muted'>請稍後重試，或確認網路可連線至公開行情 API。</p>"})}
+}
+loadAll();setInterval(loadAll,60000);
+</script>
+</body>
+</html>
