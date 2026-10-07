@@ -19,7 +19,7 @@
 @media(max-width:700px){.attackModes{grid-template-columns:1fr 1fr 1fr}.attackKpis{grid-template-columns:repeat(2,1fr)}} .liveFlash{animation:livePulse .35s ease-out}@keyframes livePulse{50%{opacity:.55;transform:scale(1.02)}} </style>
 </head>
 <body><div class="wrap"><div id="installBar" class="card" style="display:none;margin-bottom:12px;padding:10px 12px;align-items:center;justify-content:space-between;gap:10px"><div><b>📱 Crypto Strategy Desk</b><div class="muted">把網站安裝成手機 App，之後可從主畫面一鍵開啟。</div></div><button id="installBtn">安裝 App</button></div>
-<header class="top"><div><h1>Crypto Strategy Desk <span class="badge">PRO</span></h1><div class="muted">BTC / ETH 多週期交易儀表板 · <span id="updated">載入中…</span></div></div><div><span class="live"><i class="dot"></i>LIVE</span> <button onclick="loadAll()">↻ 更新</button></div></header>
+<header class="top"><div><h1>Crypto Strategy Desk <span class="badge">PRO</span></h1><div class="muted">BTC / ETH 多週期交易儀表板 · <span id="updated">載入中…</span> · <span id="liveStatus">● 即時價格連線中…</span></div></div><div><span class="live"><i class="dot"></i>LIVE</span> <button onclick="loadAll()">↻ 更新</button></div></header>
 <div class="controls"><button class="tab active" data-i="1m">1m</button><button class="tab" data-i="5m">5m</button><button class="tab" data-i="15m">15m</button><button class="tab" data-i="1h">1H</button><button class="tab" data-i="4h">4H</button></div>
 <div class="grid">
 <section class="card" id="btc"></section><section class="card" id="eth"></section>
